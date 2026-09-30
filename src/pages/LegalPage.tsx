@@ -170,7 +170,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type, onNavigate }) => {
 
           <h2>5. Contact Us</h2>
           <p>
-            If you have questions about our privacy practices, contact us at <code className="text-blue-600">support@quickpixel.ai.studio</code>.
+            If you have questions about our privacy practices, contact us at <code className="text-blue-600">contact@allinoneconverter.com</code>.
           </p>
         </article>
       </div>
