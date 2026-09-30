@@ -747,6 +747,8 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                     <img
                       src={res.compressedUrl}
                       alt={res.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-8 h-8 rounded object-cover border border-slate-200"
                     />
                     <div className="truncate max-w-[120px]">
@@ -1284,13 +1286,15 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                     </div>
 
                     {/* Interactive Image Container */}
-                    <div className="relative h-72 sm:h-96 w-full bg-slate-950 flex items-center justify-center overflow-hidden select-none">
+                    <div className="relative h-64 sm:h-80 md:h-96 w-full bg-slate-950 flex items-center justify-center overflow-hidden select-none touch-pan-y">
                       {compareMode === 'split' ? (
                         <div className="relative w-full h-full flex items-center justify-center">
                           {/* Compressed Image (Background) */}
                           <img
                             src={activeResult.compressedUrl}
                             alt="Compressed preview"
+                            loading="lazy"
+                            decoding="async"
                             className="absolute max-h-full max-w-full object-contain pointer-events-none"
                           />
 
@@ -1302,6 +1306,8 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                             <img
                               src={activeResult.originalPreviewUrl}
                               alt="Original preview"
+                              loading="lazy"
+                              decoding="async"
                               className="max-h-full max-w-full object-contain"
                             />
                           </div>
@@ -1311,7 +1317,7 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                             className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-20 shadow-md flex items-center justify-center"
                             style={{ left: `${compareSliderPos}%` }}
                           >
-                            <div className="w-6 h-6 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center text-[10px] font-bold">
+                            <div className="w-7 h-7 sm:w-6 sm:h-6 rounded-full bg-white text-slate-800 shadow-md flex items-center justify-center text-[11px] sm:text-[10px] font-bold">
                               &harr;
                             </div>
                           </div>
@@ -1323,7 +1329,8 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                             max="100"
                             value={compareSliderPos}
                             onChange={(e) => setCompareSliderPos(parseFloat(e.target.value))}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30"
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-ew-resize z-30 touch-pan-x"
+                            aria-label="Comparison slider"
                           />
 
                           {/* Labels */}
@@ -1340,14 +1347,16 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                           <img
                             src={toggleState === 'before' ? activeResult.originalPreviewUrl : activeResult.compressedUrl}
                             alt={toggleState}
+                            loading="lazy"
+                            decoding="async"
                             className="max-h-full max-w-full object-contain"
                           />
-                          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/70 backdrop-blur-md p-1 rounded-lg">
+                          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-black/70 backdrop-blur-md p-1 rounded-xl">
                             <button
                               type="button"
                               onClick={() => setToggleState('before')}
-                              className={`px-3 py-1 rounded text-xs font-semibold ${
-                                toggleState === 'before' ? 'bg-white text-slate-900' : 'text-slate-300'
+                              className={`min-h-[36px] px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${
+                                toggleState === 'before' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-300 hover:text-white'
                               }`}
                             >
                               Before ({formatBytes(activeResult.originalSize)})
@@ -1355,8 +1364,8 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                             <button
                               type="button"
                               onClick={() => setToggleState('after')}
-                              className={`px-3 py-1 rounded text-xs font-semibold ${
-                                toggleState === 'after' ? 'bg-blue-600 text-white' : 'text-slate-300'
+                              className={`min-h-[36px] px-3.5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer ${
+                                toggleState === 'after' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-300 hover:text-white'
                               }`}
                             >
                               After ({formatBytes(activeResult.compressedSize)})

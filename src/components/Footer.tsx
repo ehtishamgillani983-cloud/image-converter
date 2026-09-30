@@ -63,34 +63,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Compressors Col */}
           <div>
             <h4 className="text-white font-semibold text-xs tracking-wider uppercase mb-4">Compression</h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <a href="/image-compressor" onClick={(e) => handleNav('/image-compressor', e)} className="hover:text-white transition-colors">
+                <a href="/image-compressor" onClick={(e) => handleNav('/image-compressor', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Image Compressor
                 </a>
               </li>
               <li>
-                <a href="/compress-jpg" onClick={(e) => handleNav('/compress-jpg', e)} className="hover:text-white transition-colors">
+                <a href="/compress-jpg" onClick={(e) => handleNav('/compress-jpg', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Compress JPG
                 </a>
               </li>
               <li>
-                <a href="/compress-png" onClick={(e) => handleNav('/compress-png', e)} className="hover:text-white transition-colors">
+                <a href="/compress-png" onClick={(e) => handleNav('/compress-png', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Compress PNG
                 </a>
               </li>
               <li>
-                <a href="/compress-webp" onClick={(e) => handleNav('/compress-webp', e)} className="hover:text-white transition-colors">
+                <a href="/compress-webp" onClick={(e) => handleNav('/compress-webp', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Compress WebP
                 </a>
               </li>
               <li>
-                <a href="/compress-image-to-200kb" onClick={(e) => handleNav('/compress-image-to-200kb', e)} className="hover:text-white transition-colors">
+                <a href="/compress-image-to-200kb" onClick={(e) => handleNav('/compress-image-to-200kb', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Compress to 200KB
                 </a>
               </li>
               <li>
-                <a href="/compress-image-to-100kb" onClick={(e) => handleNav('/compress-image-to-100kb', e)} className="hover:text-white transition-colors">
+                <a href="/compress-image-to-100kb" onClick={(e) => handleNav('/compress-image-to-100kb', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Compress to 100KB
                 </a>
               </li>
@@ -100,34 +100,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Converters & Resizers Col */}
           <div>
             <h4 className="text-white font-semibold text-xs tracking-wider uppercase mb-4">Convert & Resize</h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <a href="/image-resizer" onClick={(e) => handleNav('/image-resizer', e)} className="hover:text-white transition-colors">
+                <a href="/image-resizer" onClick={(e) => handleNav('/image-resizer', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Image Resizer
                 </a>
               </li>
               <li>
-                <a href="/jpg-to-png" onClick={(e) => handleNav('/jpg-to-png', e)} className="hover:text-white transition-colors">
+                <a href="/jpg-to-png" onClick={(e) => handleNav('/jpg-to-png', e)} className="hover:text-white transition-colors py-1 inline-block">
                   JPG to PNG
                 </a>
               </li>
               <li>
-                <a href="/png-to-jpg" onClick={(e) => handleNav('/png-to-jpg', e)} className="hover:text-white transition-colors">
+                <a href="/png-to-jpg" onClick={(e) => handleNav('/png-to-jpg', e)} className="hover:text-white transition-colors py-1 inline-block">
                   PNG to JPG
                 </a>
               </li>
               <li>
-                <a href="/jpg-to-webp" onClick={(e) => handleNav('/jpg-to-webp', e)} className="hover:text-white transition-colors">
+                <a href="/jpg-to-webp" onClick={(e) => handleNav('/jpg-to-webp', e)} className="hover:text-white transition-colors py-1 inline-block">
                   JPG to WebP
                 </a>
               </li>
               <li>
-                <a href="/heic-to-jpg" onClick={(e) => handleNav('/heic-to-jpg', e)} className="hover:text-white transition-colors">
+                <a href="/heic-to-jpg" onClick={(e) => handleNav('/heic-to-jpg', e)} className="hover:text-white transition-colors py-1 inline-block">
                   HEIC to JPG
                 </a>
               </li>
               <li>
-                <a href="/image-to-pdf" onClick={(e) => handleNav('/image-to-pdf', e)} className="hover:text-white transition-colors">
+                <a href="/image-to-pdf" onClick={(e) => handleNav('/image-to-pdf', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Image to PDF
                 </a>
               </li>
@@ -137,34 +137,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Resources & Legal Col */}
           <div>
             <h4 className="text-white font-semibold text-xs tracking-wider uppercase mb-4">Resources</h4>
-            <ul className="space-y-2.5">
+            <ul className="space-y-2">
               <li>
-                <a href="/tools" onClick={(e) => handleNav('/tools', e)} className="hover:text-white transition-colors">
+                <a href="/tools" onClick={(e) => handleNav('/tools', e)} className="hover:text-white transition-colors py-1 inline-block">
                   All 20+ Tools
                 </a>
               </li>
               <li>
-                <a href="/blog" onClick={(e) => handleNav('/blog', e)} className="hover:text-white transition-colors">
+                <a href="/blog" onClick={(e) => handleNav('/blog', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Optimization Blog
                 </a>
               </li>
               <li>
-                <a href="/privacy" onClick={(e) => handleNav('/privacy', e)} className="hover:text-white transition-colors">
+                <a href="/privacy" onClick={(e) => handleNav('/privacy', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="/terms" onClick={(e) => handleNav('/terms', e)} className="hover:text-white transition-colors">
+                <a href="/terms" onClick={(e) => handleNav('/terms', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Terms of Service
                 </a>
               </li>
               <li>
-                <a href="/contact" onClick={(e) => handleNav('/contact', e)} className="hover:text-white transition-colors">
+                <a href="/contact" onClick={(e) => handleNav('/contact', e)} className="hover:text-white transition-colors py-1 inline-block">
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="/sitemap" onClick={(e) => handleNav('/sitemap', e)} className="hover:text-white transition-colors">
+                <a href="/sitemap" onClick={(e) => handleNav('/sitemap', e)} className="hover:text-white transition-colors py-1 inline-block">
                   HTML Sitemap
                 </a>
               </li>

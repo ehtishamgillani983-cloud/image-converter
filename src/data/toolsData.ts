@@ -1,6 +1,6 @@
 /**
  * Complete directory of all QuickPixel Tools with SEO metadata,
- * deep educational content, structured FAQ items, and technical configurations.
+ * keyword mapping, technical specs, structured FAQ items, and deep content.
  */
 
 export interface ToolDef {
@@ -10,6 +10,13 @@ export interface ToolDef {
   metaDescription: string;
   h1: string;
   subtitle: string;
+  primaryKeyword: string;
+  secondaryKeywords: string[];
+  searchIntent: string;
+  longTailKeywords?: string[];
+  supportedInputFormats: string[];
+  supportedOutputFormats: string[];
+  maxFileSize: string;
   category: 'compression' | 'conversion' | 'resizing' | 'pdf' | 'editing';
   defaultMode: 'compress' | 'convert' | 'resize' | 'crop' | 'rotate' | 'quality_reduce' | 'pdf';
   defaultFormat: 'image/jpeg' | 'image/png' | 'image/webp' | 'original';
@@ -22,6 +29,7 @@ export interface ToolDef {
   stepGuide: { step: string; title: string; desc: string }[];
   overviewHtml: string;
   whyUseHtml: string;
+  commonUseCases: { title: string; desc: string }[];
   faqs: { question: string; answer: string }[];
   relatedSlugs: string[];
 }
@@ -34,6 +42,25 @@ export const TOOLS_DATA: ToolDef[] = [
     metaDescription: 'Compress JPG, PNG, and WebP images online without losing quality. Free, fast browser-side image compressor. No file size limits or registration.',
     h1: 'Free Online Image Compressor',
     subtitle: 'Reduce image file size by up to 85% while preserving visual clarity. Fast, private, and 100% processed in your browser.',
+    primaryKeyword: 'image compressor online',
+    secondaryKeywords: [
+      'compress image online',
+      'free image compressor',
+      'reduce image size',
+      'photo compressor online',
+      'compress pictures online',
+      'image size reducer',
+      'batch image compressor',
+    ],
+    searchIntent: 'Transactional / Utility – compress digital images (JPG, PNG, WebP) to save bandwidth and storage without loss of clarity.',
+    longTailKeywords: [
+      'how to compress images online for free',
+      'compress high resolution photos without losing quality',
+      'best free image compressor for web developers',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['Original Format', 'JPG', 'PNG', 'WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended for browser memory)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'original',
@@ -46,10 +73,11 @@ export const TOOLS_DATA: ToolDef[] = [
       'Processed in your web browser for instant speed and privacy',
       'Batch compress multiple photos simultaneously',
       'Target file size mode (200KB, 500KB, 1MB, or custom)',
+      'Side-by-side split screen visual quality comparison',
     ],
     stepGuide: [
-      { step: '1', title: 'Upload Images', desc: 'Drag and drop your JPG, PNG, WebP or HEIC photos into the upload box.' },
-      { step: '2', title: 'Choose Quality or Target', desc: 'Adjust the compression slider, pick a preset (Web, Email, Social), or specify a target file size.' },
+      { step: '1', title: 'Upload Images', desc: 'Drag and drop your JPG, PNG, WebP or HEIC photos into the upload area above.' },
+      { step: '2', title: 'Choose Quality or Target', desc: 'Adjust the compression slider, pick a preset (Web, Email, Balanced), or specify a target file size.' },
       { step: '3', title: 'Download Instantly', desc: 'Preview the before/after result and download individual images or all as a ZIP archive.' },
     ],
     overviewHtml: `
@@ -59,65 +87,134 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Whether you are an e-commerce store owner seeking faster PageSpeed scores, a photographer emailing high-resolution proofs, or a job applicant uploading a resume headshot with strict file limits, image compression is indispensable:</p>
       <ul>
-        <li><strong>Accelerate Web Performance:</strong> Faster page loads directly boost SEO rankings and user engagement.</li>
-        <li><strong>Email Attachment Compliance:</strong> Never hit the frustrating 25MB email attachment limit again.</li>
-        <li><strong>Storage Optimization:</strong> Save valuable gigabytes on your local drive and cloud backups.</li>
+        <li><strong>Speed:</strong> Instant client-side processing without waiting for cloud queues.</li>
+        <li><strong>Privacy:</strong> Zero remote server storage—ideal for confidential documents and family photos.</li>
+        <li><strong>Precision:</strong> Real-time kilobyte calculation and split-screen comparison slider.</li>
       </ul>
     `,
-    faqs: [
-      { question: 'What is an image compressor?', answer: 'An image compressor is a utility that removes redundant or imperceptible color and pixel data from an image file, resulting in a substantially smaller file size while keeping visual appearance almost identical.' },
-      { question: 'How do I compress an image online?', answer: 'Simply drag and drop your image onto QuickPixel Tools, adjust the quality slider to your desired balance, and click Download. You can also specify an exact target size like 200KB or 500KB.' },
-      { question: 'How can I reduce image size without losing quality?', answer: 'Our intelligent compression uses visual thresholding to preserve high-contrast edges and skin tones while eliminating imperceptible color variations. You can compress images by 60% to 80% with zero visible degradation.' },
-      { question: 'Are my images uploaded to any server?', answer: 'No. QuickPixel Tools processes images entirely inside your browser using client-side HTML5 canvas APIs. Your files are never uploaded or permanently stored on any server.' },
-      { question: 'Is there a limit on how many images I can compress?', answer: 'No, QuickPixel Tools is completely free to use with unlimited batch uploads.' },
+    commonUseCases: [
+      { title: 'Website Performance & SEO', desc: 'Speed up Core Web Vitals and Largest Contentful Paint (LCP) by shrinking homepage banners and product catalogs.' },
+      { title: 'Email Attachments', desc: 'Avoid email bounce backs by reducing photo batches below typical 20MB or 25MB attachment limits.' },
+      { title: 'Online Form Submissions', desc: 'Meet strict file upload restrictions on government, employment, and university admission portals.' },
+      { title: 'Device Storage Cleanup', desc: 'Reclaim gigabytes of space on your smartphone and hard drive without deleting memories.' },
     ],
-    relatedSlugs: ['compress-jpg', 'compress-png', 'compress-webp', 'compress-image-to-200kb', 'image-resizer', 'image-to-pdf'],
+    faqs: [
+      {
+        question: 'What is an online image compressor and how does it work?',
+        answer: 'An online image compressor optimizes digital pictures by selectively eliminating redundant metadata and imperceptible color variations using perceptual quantization. QuickPixel Tools accomplishes this directly inside your browser using HTML5 Canvas and WebAssembly, so your files are never uploaded to an external server.',
+      },
+      {
+        question: 'How do I compress images online without losing quality?',
+        answer: 'To compress without visible loss, maintain a quality setting between 75% and 85%. Human eyes are far more sensitive to luminance (edges and contrast) than subtle chrominance gradations. QuickPixel lets you inspect every photo with an interactive split slider before downloading.',
+      },
+      {
+        question: 'Can I batch compress multiple photos at the same time?',
+        answer: 'Yes! You can drop dozens of images into the compressor at once. Each image is processed concurrently in your browser, and you can download them individually or as a single combined ZIP archive with one click.',
+      },
+      {
+        question: 'Which image formats does this compressor support?',
+        answer: 'QuickPixel Tools compresses JPG, JPEG, PNG, WebP, and Apple HEIC photos. You can preserve the original format or cross-convert during compression.',
+      },
+      {
+        question: 'Is there a file size limit or fee to use this tool?',
+        answer: 'No. QuickPixel Tools is 100% free with no registration, no subscriptions, and no artificial daily limits. Your browser handles the computation, allowing files up to 100MB each.',
+      },
+      {
+        question: 'Are my uploaded photos private and secure?',
+        answer: 'Yes. All compression computations happen locally within your web browser using client-side JavaScript. Your files are never transmitted to or saved on remote servers.',
+      },
+    ],
+    relatedSlugs: ['compress-jpg', 'compress-png', 'compress-webp', 'compress-image-to-200kb', 'image-resizer', 'image-quality-reducer'],
   },
   {
     slug: 'compress-jpg',
     name: 'Compress JPG',
-    metaTitle: 'Compress JPG Online – Free JPG Image Compressor | QuickPixel Tools',
-    metaDescription: 'Compress JPG and JPEG photos online for free. Reduce JPG file size by up to 80% while maintaining sharp image quality. Instant browser-based processing.',
+    metaTitle: 'Compress JPG Online – Free JPEG Image Compressor | QuickPixel Tools',
+    metaDescription: 'Compress JPG and JPEG images online for free. Reduce JPG file size by up to 80% with adjustable quality control. Fast, private browser compression.',
     h1: 'Compress JPG Images Online Free',
-    subtitle: 'Reduce the file size of your JPG and JPEG photos without visible pixelation. Fast, private, and batch-enabled.',
+    subtitle: 'Shrink JPEG photo file sizes without blurriness or color banding. 100% private in-browser compression.',
+    primaryKeyword: 'compress JPG online',
+    secondaryKeywords: [
+      'compress JPEG online',
+      'reduce JPG file size',
+      'free JPG compressor',
+      'compress JPG image',
+      'shrink JPG size',
+      'JPG file size reducer',
+      'optimize JPEG online',
+    ],
+    searchIntent: 'Transactional / Utility – compress JPEG/JPG photos to make them lighter for websites, email, and social networks.',
+    longTailKeywords: [
+      'how to compress JPG photos online for free',
+      'reduce JPG file size without losing sharpness',
+      'batch compress JPEG images in browser',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/jpeg',
-    defaultQuality: 0.78,
+    defaultQuality: 0.8,
     acceptedFormats: '.jpg,.jpeg',
     iconName: 'FileImage',
-    shortDesc: 'Optimize JPEG photos for fast websites and email attachments.',
+    shortDesc: 'Optimize JPG/JPEG photos with customized quantization for maximum space savings.',
     benefits: [
-      'Tailored quantization matrices for natural photos and gradients',
-      'Preserves original color profile and dimensions',
-      'Side-by-side before and after comparison slider',
-      'Download single files or batch ZIP archive',
+      'Up to 80% file size reduction with tuned discrete cosine transform matrices',
+      'Strips unnecessary EXIF camera metadata and location tags for privacy',
+      'Batch process multiple JPEG photos with one-click ZIP download',
+      'Interactive before/after split slider for visual quality verification',
     ],
     stepGuide: [
-      { step: '1', title: 'Select JPG Files', desc: 'Drop your .jpg or .jpeg images into the processing area.' },
-      { step: '2', title: 'Set Compression Level', desc: 'Choose a preset like Website or Balanced, or fine-tune quality with the interactive slider.' },
-      { step: '3', title: 'Download Optimized JPG', desc: 'Save your compressed JPG with significant kilobyte savings.' },
+      { step: '1', title: 'Drop JPG Photos', desc: 'Select or drag your .jpg or .jpeg images into the box.' },
+      { step: '2', title: 'Tune Compression', desc: 'Use our balanced 80% preset or slide to custom quality.' },
+      { step: '3', title: 'Save JPEG', desc: 'Inspect the visual clarity and download your lean JPGs.' },
     ],
     overviewHtml: `
-      <p>JPG (Joint Photographic Experts Group) is the most widespread format for photographs and digital cameras. Because JPG uses lossy discrete cosine transform compression, poorly optimized JPG files can easily balloon to 5MB–10MB each. QuickPixel Tools re-encodes JPG images using smart variable bitrate algorithms, trimming unseen color entropy without introducing artifacts.</p>
+      <p>JPEG is the world standard for digital photography, but uncompressed camera files frequently exceed 10MB each. QuickPixel Tools Compress JPG uses perceptual discrete cosine transform (DCT) quantization to eliminate invisible high-frequency noise and strip bloated EXIF metadata, reducing byte weight while preserving natural textures and skin tones.</p>
     `,
     whyUseHtml: `
-      <p>Compressing JPG files is essential for web publishers, real estate portals, and social media managers. Reducing a 4MB photo to 350KB cuts page loading times from seconds to milliseconds, drastically cutting bounce rates on mobile networks.</p>
+      <p>Stripping camera EXIF tags protects your privacy by removing GPS coordinates while shedding 50KB to 200KB of bloat per photo.</p>
     `,
+    commonUseCases: [
+      { title: 'DSLR & Smartphone Photo Archiving', desc: 'Reduce raw camera exports by 70% before archiving in cloud backup drives.' },
+      { title: 'E-commerce Product Photography', desc: 'Deliver crisp product catalogs that load instantly on mobile shoppers devices.' },
+      { title: 'Real Estate Listings', desc: 'Ensure multi-photo home tour pages render smoothly without bandwidth lag.' },
+    ],
     faqs: [
-      { question: 'What is the best compression level for JPG images?', answer: 'A quality level between 75% and 82% generally yields a 70% reduction in file size with virtually undetectable visual differences.' },
-      { question: 'Can I compress multiple JPG files at once?', answer: 'Yes! QuickPixel Tools supports multi-file drag and drop so you can batch compress dozens of JPG images simultaneously.' },
-      { question: 'Does JPG compression remove EXIF data?', answer: 'Our client-side canvas re-encoder naturally strips heavy camera metadata, making your images lighter and protecting your location privacy.' },
+      { question: 'What is the ideal compression level for JPGs?', answer: 'Between 75% and 82% quality offers the optimal sweet spot, producing up to 75% byte savings with virtually indistinguishable visual variance.' },
+      { question: 'Does compressing JPGs remove EXIF data?', answer: 'Yes! QuickPixel automatically strips camera metadata, device serials, and GPS location tags, protecting your privacy and saving extra kilobytes.' },
+      { question: 'Is JPG compression lossy or lossless?', answer: 'JPEG is inherently lossy, but perceptual quantization ensures that only subtle, high-frequency data the human eye cannot discern is discarded.' },
+      { question: 'Can I compress multiple JPG files at once?', answer: 'Yes, you can upload dozens of JPG files simultaneously and download them in a single ZIP file.' },
     ],
     relatedSlugs: ['image-compressor', 'jpg-to-png', 'jpg-to-webp', 'compress-image-to-200kb', 'image-resizer'],
   },
   {
     slug: 'compress-png',
     name: 'Compress PNG',
-    metaTitle: 'Compress PNG Online – Free PNG Image Compressor | QuickPixel Tools',
+    metaTitle: 'Compress PNG Online – Shrink PNG Images with Transparency | QuickPixel Tools',
     metaDescription: 'Compress PNG images online while preserving 100% transparency. Shrink PNG file size for logos, icons, and UI screenshots quickly and privately.',
     h1: 'Compress PNG Online with Transparency',
     subtitle: 'Reduce PNG file size without blurring sharp text, UI graphics, or losing transparent backgrounds.',
+    primaryKeyword: 'compress PNG online',
+    secondaryKeywords: [
+      'PNG compressor',
+      'reduce PNG size',
+      'compress PNG transparent',
+      'shrink PNG file',
+      'free PNG compressor',
+      'optimize PNG online',
+      'lossless PNG compression',
+    ],
+    searchIntent: 'Transactional / Utility – compress PNG graphics and icons while preserving 100% transparent backgrounds.',
+    longTailKeywords: [
+      'how to compress transparent PNG without black background',
+      'shrink PNG screenshot size online free',
+      'batch optimize PNG icons and logos in browser',
+    ],
+    supportedInputFormats: ['PNG'],
+    supportedOutputFormats: ['PNG', 'WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/png',
@@ -126,10 +223,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Image',
     shortDesc: 'Shrink transparent PNG files, logos, badges, and screenshots.',
     benefits: [
-      'Full alpha-channel transparency preservation',
-      'Eliminates redundant color palette entries and metadata',
-      'Crisp edge retention ideal for logos and vector exports',
-      'Batch processing with zero server uploads',
+      'Full alpha-channel transparency preservation with zero background discoloration',
+      'Eliminates redundant color palette entries and metadata bloat',
+      'Crisp edge retention ideal for logos, typography, and vector exports',
+      'Batch processing with zero server uploads for total privacy',
     ],
     stepGuide: [
       { step: '1', title: 'Drop PNG Images', desc: 'Upload transparent PNGs, logos, screenshots, or design assets.' },
@@ -142,19 +239,45 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Using uncompressed PNG graphics on websites can degrade Google Core Web Vitals, specifically Largest Contentful Paint (LCP). Compressing your PNG logos and hero illustrations ensures lightning-fast page renders.</p>
     `,
+    commonUseCases: [
+      { title: 'Company Logos & Branding', desc: 'Keep high-resolution brand assets lightweight for website headers without transparent halos.' },
+      { title: 'Software & UI Screenshots', desc: 'Shrink documentation screenshots from 6MB down to under 800KB for easy sharing.' },
+      { title: 'Digital Art & Vector Exports', desc: 'Compress transparent illustrations for stickers, presentations, and merch mockups.' },
+    ],
     faqs: [
       { question: 'Will compressing my PNG remove the transparent background?', answer: 'No! When compressing in PNG mode or WebP mode, full alpha transparency is strictly maintained.' },
-      { question: 'Why are PNG files usually larger than JPG?', answer: 'PNG uses lossless compression to preserve pixel-exact sharpness, whereas JPG discards subtle color nuances. QuickPixel lets you convert or compress without losing clarity.' },
+      { question: 'Why are PNG files usually larger than JPG?', answer: 'PNG uses lossless compression to preserve pixel-exact sharpness, whereas JPG discards subtle color nuances. QuickPixel lets you compress without losing clarity.' },
+      { question: 'Can I convert heavy PNGs to WebP for even smaller sizes?', answer: 'Yes! You can use our PNG to WebP tool, which retains transparent backgrounds while reducing file sizes by up to 60%.' },
+      { question: 'Is my confidential company screenshot safe?', answer: 'Absolutely. All processing occurs entirely in your browser memory; your image is never transmitted over the internet.' },
     ],
     relatedSlugs: ['image-compressor', 'png-to-jpg', 'png-to-webp', 'compress-image-to-100kb', 'image-resizer'],
   },
   {
     slug: 'compress-webp',
     name: 'Compress WebP',
-    metaTitle: 'Compress WebP Online – Free WebP Compressor | QuickPixel Tools',
+    metaTitle: 'Compress WebP Online – Free WebP Image Optimizer | QuickPixel Tools',
     metaDescription: 'Compress WebP images online for free. Optimize next-gen WebP graphics for top Google PageSpeed insights. Fast, secure in-browser compression.',
-    h1: 'Compress WebP Images Online',
+    h1: 'Compress WebP Images Online Free',
     subtitle: 'Optimize Google WebP files for maximum compression efficiency and blazing-fast site speed.',
+    primaryKeyword: 'compress WebP online',
+    secondaryKeywords: [
+      'WebP compressor',
+      'reduce WebP file size',
+      'shrink WebP image',
+      'optimize WebP online',
+      'free WebP compressor',
+      'batch compress WebP',
+      'WebP optimizer',
+    ],
+    searchIntent: 'Transactional / Utility – optimize Google WebP format images to achieve maximum Google PageSpeed and Core Web Vitals scores.',
+    longTailKeywords: [
+      'how to compress WebP images for faster website load',
+      'reduce WebP size online free without watermark',
+      'best WebP optimizer for Google PageSpeed',
+    ],
+    supportedInputFormats: ['WebP'],
+    supportedOutputFormats: ['WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/webp',
@@ -164,9 +287,9 @@ export const TOOLS_DATA: ToolDef[] = [
     shortDesc: 'Fine-tune next-generation WebP files for stellar Core Web Vitals.',
     benefits: [
       'Modern predictive coding for ultra-compact file footprints',
-      'Supports both lossy and lossless WebP streams',
-      'Interactive before/after inspection',
-      'Free unlimited usage directly in your browser',
+      'Supports both lossy and lossless WebP image streams',
+      'Interactive before/after inspection with real-time byte count',
+      'Free unlimited usage directly in your browser with zero registration',
     ],
     stepGuide: [
       { step: '1', title: 'Select WebP Files', desc: 'Choose your .webp images from your desktop or phone.' },
@@ -174,14 +297,21 @@ export const TOOLS_DATA: ToolDef[] = [
       { step: '3', title: 'Download WebP', desc: 'Save your ultra-optimized WebP asset instantly.' },
     ],
     overviewHtml: `
-      <p>WebP is Google's modern image format designed specifically for the web, providing 26% smaller files than PNG and 25-34% smaller files than comparable JPGs. Even so, many WebP files produced by cameras and graphic design tools are exported with bloated settings. QuickPixel fine-tunes WebP quantization to give you maximum bandwidth savings.</p>
+      <p>WebP is Google modern image format designed specifically for the web, providing 26% smaller files than PNG and 25-34% smaller files than comparable JPGs. Even so, many WebP files produced by cameras and graphic design tools are exported with bloated settings. QuickPixel fine-tunes WebP quantization to give you maximum bandwidth savings.</p>
     `,
     whyUseHtml: `
       <p>Google Lighthouse and PageSpeed Insights explicitly recommend "Serve images in next-gen formats" and "Efficiently encode images". Compressing WebP images ensures your site hits green 90+ performance scores.</p>
     `,
+    commonUseCases: [
+      { title: 'Google Core Web Vitals', desc: 'Pass Google PageSpeed audits and achieve sub-second Largest Contentful Paint timings.' },
+      { title: 'Mobile App Asset Bundling', desc: 'Minimize APK and IPA app download sizes by squeezing WebP UI illustrations.' },
+      { title: 'High-Traffic Blog Banners', desc: 'Save hundreds of gigabytes in CDN bandwidth fees on high-traffic websites.' },
+    ],
     faqs: [
-      { question: 'Do all modern browsers support WebP?', answer: 'Yes! Chrome, Safari, Firefox, Edge, and all modern mobile browsers fully support WebP.' },
-      { question: 'Can I convert my JPG or PNG to WebP too?', answer: 'Yes, QuickPixel Tools includes dedicated JPG to WebP and PNG to WebP converters that run in your browser.' },
+      { question: 'Do all modern browsers support WebP?', answer: 'Yes! Chrome, Safari, Firefox, Edge, and all modern mobile browsers fully support WebP images.' },
+      { question: 'Can I convert my JPG or PNG to WebP too?', answer: 'Yes, QuickPixel Tools includes dedicated JPG to WebP and PNG to WebP converters that run right in your browser.' },
+      { question: 'Does WebP support transparency?', answer: 'Yes, WebP supports full 8-bit alpha transparency with significantly smaller file sizes than transparent PNGs.' },
+      { question: 'Will compressing WebP lower quality?', answer: 'At 80% quality, the visual difference is imperceptible to users while file sizes drop by 20% to 40%.' },
     ],
     relatedSlugs: ['image-compressor', 'webp-to-jpg', 'webp-to-png', 'jpg-to-webp', 'png-to-webp'],
   },
@@ -192,6 +322,24 @@ export const TOOLS_DATA: ToolDef[] = [
     metaDescription: 'Compress image to 200KB or less online. Perfect for government forms, job portals, college admissions, and portal uploads with strict 200 KB size limits.',
     h1: 'Compress Image to Under 200KB Online',
     subtitle: 'Automatically reduce your photo file size to 200 KB or less while keeping text and faces crystal clear.',
+    primaryKeyword: 'compress image to 200KB',
+    secondaryKeywords: [
+      'reduce image size to 200KB online',
+      'compress photo under 200KB',
+      'resize image to 200KB',
+      'compress JPG to 200KB',
+      'image compressor 200KB free',
+      '200KB photo converter',
+    ],
+    searchIntent: 'Transactional / Utility – precisely shrink images to under 200KB for government forms, job portals, exam registration, and visa uploads.',
+    longTailKeywords: [
+      'how to compress photo to less than 200KB online for free',
+      'compress passport photo to 200KB without blur',
+      'reduce image size to 200KB for online application',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/jpeg',
@@ -201,10 +349,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Target',
     shortDesc: 'Automated iterative compression guaranteed to hit the strict 200 KB limit.',
     benefits: [
-      'Automated multi-pass compression hits exact file size targets',
+      'Automated multi-pass compression hits exact file size targets under 200 KB',
       'Ideal for passport forms, job application portals, and visa submissions',
       'No trial-and-error guessing with quality sliders',
-      'Works seamlessly on mobile, iPhone, and desktop',
+      'Works seamlessly on mobile, iPhone, and desktop browsers',
     ],
     stepGuide: [
       { step: '1', title: 'Upload Image', desc: 'Select any high-resolution photo from your camera or files.' },
@@ -217,10 +365,16 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Manually adjusting sliders in desktop software often takes 5 to 10 attempts to hit a specific file size. QuickPixel Tools calculates the exact quantization parameters and dimension bounds automatically within 50 milliseconds.</p>
     `,
+    commonUseCases: [
+      { title: 'Civil Service & Entrance Exams', desc: 'Comply with strict UPSC, SSC, NEET, and GATE photograph upload rules.' },
+      { title: 'Visa & Passport Applications', desc: 'Submit consular ID documents with file weights under 200KB.' },
+      { title: 'Job Portals & Resumes', desc: 'Attach professional headshots to career portals that enforce 200KB ceilings.' },
+    ],
     faqs: [
       { question: 'How do I compress an image to 200KB?', answer: 'Simply upload your photo to this page. Our engine automatically sets the target limit to 200 KB and compresses the file until it falls cleanly under that ceiling.' },
       { question: 'Will the photo remain clear enough for identity verification?', answer: 'Yes! The algorithm prioritizes visual sharpness, facial landmarks, and text clarity so your photo easily passes government verification standards.' },
       { question: 'Can I compress to other sizes like 100KB or 500KB?', answer: 'Yes, you can pick any preset from our target size menu or choose our dedicated 100KB, 500KB, 1MB, or 2MB tools.' },
+      { question: 'Does this work on iPhone photos?', answer: 'Yes, you can upload HEIC or JPEG photos directly from your iPhone camera roll.' },
     ],
     relatedSlugs: ['compress-image-to-100kb', 'compress-image-to-500kb', 'compress-image-to-1mb', 'image-compressor', 'image-resizer'],
   },
@@ -231,6 +385,24 @@ export const TOOLS_DATA: ToolDef[] = [
     metaDescription: 'Compress image to 100KB or less online. Fast and easy photo size reducer for signature images, passport photos, and portals with 100 KB limits.',
     h1: 'Compress Image to Under 100KB Online',
     subtitle: 'Quickly shrink photos and signatures to 100 KB or less without blurriness.',
+    primaryKeyword: 'compress image to 100KB',
+    secondaryKeywords: [
+      'reduce image size to 100KB online',
+      'compress photo to 100KB',
+      'resize photo under 100KB',
+      'compress JPG to 100KB',
+      'signature image compressor 100KB',
+      '100KB image converter',
+    ],
+    searchIntent: 'Transactional / Utility – compress headshots, passport photos, and digital signatures under strict 100KB limits.',
+    longTailKeywords: [
+      'how to compress signature image to 100KB online',
+      'reduce passport photo to under 100KB online free',
+      'convert image to 100KB for job portal upload',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/jpeg',
@@ -240,10 +412,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Target',
     shortDesc: 'Shrink signatures, ID cards, and photos under 100 KB.',
     benefits: [
-      'Iterative dimension & quality optimization for compact files',
-      'Perfect for student registration, exam cards, and signatures',
-      'Zero server upload keeps sensitive ID documents secure',
-      'Works with JPG, PNG, and phone camera snapshots',
+      'Iterative dimension & quality optimization for compact files under 100 KB',
+      'Perfect for student registration, exam admit cards, and signatures',
+      'Zero server upload keeps sensitive ID documents completely secure',
+      'Works with JPG, PNG, and phone camera snapshots seamlessly',
     ],
     stepGuide: [
       { step: '1', title: 'Upload Photo or Signature', desc: 'Select the file you need to shrink down to 100 KB.' },
@@ -256,9 +428,16 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>QuickPixel Tools handles both dimension scaling and JPEG quantization simultaneously, producing a clean, compliant image under 100 KB without distorted proportions.</p>
     `,
+    commonUseCases: [
+      { title: 'Digital Signatures', desc: 'Ensure pen stroke signatures remain dark and crisp while staying below 100KB.' },
+      { title: 'Admit Cards & Hall Tickets', desc: 'Upload compliant candidate photos for university and board exam portals.' },
+      { title: 'Government ID Cards', desc: 'Compress scans of driver licenses or national IDs for verification portals.' },
+    ],
     faqs: [
       { question: 'How do I reduce photo size to 100KB on my mobile phone?', answer: 'Open QuickPixel Tools on your mobile browser, upload your photo from your camera roll, and our 100KB target will process it right on your phone without installing any apps.' },
       { question: 'Can I compress my signature to 100KB?', answer: 'Yes, signatures in JPG or PNG format are compressed cleanly with crisp pen strokes.' },
+      { question: 'Will my photo get rejected for being too blurry?', answer: 'No. Our algorithm checks resolution downscaling proportionally so facial features remain clear for human and automated review.' },
+      { question: 'Is my signature stored on your servers?', answer: 'No. The compression happens entirely in your local browser memory. No data is stored or transmitted.' },
     ],
     relatedSlugs: ['compress-image-to-200kb', 'compress-image-to-500kb', 'image-compressor', 'image-resizer'],
   },
@@ -267,8 +446,26 @@ export const TOOLS_DATA: ToolDef[] = [
     name: 'Compress to 500KB',
     metaTitle: 'Compress Image to 500KB Online Free | QuickPixel Tools',
     metaDescription: 'Compress images to 500KB or less online. Optimize high-res photos for web uploads, email newsletters, and content management systems.',
-    h1: 'Compress Image to Under 500KB',
+    h1: 'Compress Image to Under 500KB Online',
     subtitle: 'Optimize high-resolution photography down to 500 KB while retaining superb detail.',
+    primaryKeyword: 'compress image to 500KB',
+    secondaryKeywords: [
+      'reduce image size to 500KB online',
+      'compress photo under 500KB',
+      'compress JPG to 500KB',
+      'resize image to 500KB free',
+      '500KB photo compressor',
+      'make image 500KB',
+    ],
+    searchIntent: 'Transactional / Utility – compress high-resolution photos to under 500KB for real estate listings, CMS uploads, and portal requirements.',
+    longTailKeywords: [
+      'how to compress image to 500KB without visible quality loss',
+      'reduce JPG size to 500KB for real estate upload',
+      'free tool to make photo under 500KB online',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/jpeg',
@@ -278,10 +475,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Target',
     shortDesc: 'Great sweet spot for web publishing, banners, and blog posts.',
     benefits: [
-      'Preserves high definition while staying under half a megabyte',
-      'Ideal for blog featured images and Shopify hero banners',
-      'Batch optimize multiple catalog photos',
-      'Fast client-side rendering',
+      'Preserves high definition while staying strictly under half a megabyte',
+      'Ideal for blog featured images, Shopify banners, and real estate portals',
+      'Batch optimize multiple catalog photos with one click',
+      'Fast client-side rendering with zero wait time',
     ],
     stepGuide: [
       { step: '1', title: 'Drop Photos', desc: 'Upload your high-res photos or graphics.' },
@@ -294,8 +491,16 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Keeping hero images under 500 KB prevents slow banner rendering, eliminates cumulative layout shifts (CLS), and ensures your web pages score well on Google audits.</p>
     `,
+    commonUseCases: [
+      { title: 'Real Estate Listings', desc: 'Submit MLS photos meeting strict 500KB portal limits while showing crystal clear interiors.' },
+      { title: 'Shopify & E-Commerce', desc: 'Deliver fast-loading hero sliders and category banners that keep bounce rates low.' },
+      { title: 'Email Newsletters', desc: 'Keep marketing emails under spam-filter weight caps for better inbox delivery.' },
+    ],
     faqs: [
       { question: 'Why is 500KB a popular target size?', answer: 'It delivers retina-ready clarity for web design without the performance penalty of multi-megabyte raw photos.' },
+      { question: 'Will a 500KB photo look good on a 4K monitor?', answer: 'Yes. At 500 KB, a 1920x1080 or 2560x1440 JPEG retains rich detail and sharp contours.' },
+      { question: 'Can I compress HEIC iPhone photos to 500KB?', answer: 'Yes, QuickPixel automatically decodes iPhone HEIC photos and encodes them under 500 KB in universal JPEG format.' },
+      { question: 'Can I do multiple photos at once?', answer: 'Yes, batch upload as many photos as you want and each will be targeted to under 500 KB.' },
     ],
     relatedSlugs: ['compress-image-to-1mb', 'compress-image-to-200kb', 'image-compressor', 'image-resizer'],
   },
@@ -306,6 +511,24 @@ export const TOOLS_DATA: ToolDef[] = [
     metaDescription: 'Compress large images to under 1MB online for free. Shrink 10MB+ DSLR and iPhone photos down to 1 MB easily and quickly.',
     h1: 'Compress Image to Under 1MB Online',
     subtitle: 'Tame multi-megabyte DSLR and iPhone camera images to under 1 MB with zero visible loss.',
+    primaryKeyword: 'compress image to 1MB',
+    secondaryKeywords: [
+      'reduce image size to 1MB online',
+      'compress photo under 1MB',
+      'compress JPG to 1MB',
+      'shrink photo to 1MB free',
+      'make image less than 1MB',
+      '1MB photo compressor',
+    ],
+    searchIntent: 'Transactional / Utility – reduce 5MB-20MB DSLR/camera photos below 1MB for email attachments and web publishing.',
+    longTailKeywords: [
+      'how to reduce 10MB photo to 1MB online for free',
+      'compress high res DSLR images to 1MB',
+      'make picture file size under 1MB without losing quality',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/jpeg',
@@ -317,8 +540,8 @@ export const TOOLS_DATA: ToolDef[] = [
     benefits: [
       'Easily compress 12MB+ phone photos into manageable 1MB files',
       'Retains ultra-sharp photographic detail and dynamic range',
-      'Safe, private in-browser compression',
-      'One-click batch downloads',
+      'Safe, private in-browser compression with no cloud storage',
+      'One-click batch downloads as a single ZIP archive',
     ],
     stepGuide: [
       { step: '1', title: 'Upload Heavy Photo', desc: 'Select multi-megabyte photos from your phone or camera.' },
@@ -331,8 +554,16 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>At 1 MB, photos look identical to originals on retina screens, 4K monitors, and photo prints, yet transfer 10x faster.</p>
     `,
+    commonUseCases: [
+      { title: 'Email Attachments', desc: 'Send dozens of high-res photos without reaching mailbox attachment thresholds.' },
+      { title: 'Online Portfolio Galleries', desc: 'Display high-resolution artwork without causing page lag for visitors.' },
+      { title: 'Social Media Uploads', desc: 'Avoid aggressive server re-compression on Facebook and LinkedIn by uploading optimal 1MB files.' },
+    ],
     faqs: [
       { question: 'How much quality is lost when compressing to 1MB?', answer: 'For standard photos, virtually none. Human eyes cannot distinguish between an uncompressed 12MB photo and a properly quantized 1MB JPEG at standard viewing distances.' },
+      { question: 'Can I print a 1MB compressed photo?', answer: 'Yes! At 1 MB, a 2400x1600 or 3000x2000 JPEG has ample resolution for sharp 8x10 inch prints.' },
+      { question: 'How many photos can I compress at once?', answer: 'You can upload dozens of photos concurrently; QuickPixel processes them all in parallel in your browser.' },
+      { question: 'Is this tool really free?', answer: 'Yes, 100% free with no subscriptions or watermarks.' },
     ],
     relatedSlugs: ['compress-image-to-2mb', 'compress-image-to-500kb', 'image-compressor', 'heic-to-jpg'],
   },
@@ -341,8 +572,26 @@ export const TOOLS_DATA: ToolDef[] = [
     name: 'Compress to 2MB',
     metaTitle: 'Compress Image to 2MB Online Free | QuickPixel Tools',
     metaDescription: 'Compress images to 2MB or less online. Satisfy file upload caps on job portals, real estate platforms, and cloud storage systems.',
-    h1: 'Compress Image to Under 2MB',
+    h1: 'Compress Image to Under 2MB Online',
     subtitle: 'Reduce large image files to satisfy strict 2 MB upload requirements.',
+    primaryKeyword: 'compress image to 2MB',
+    secondaryKeywords: [
+      'reduce image size to 2MB online',
+      'compress photo under 2MB',
+      'compress JPG to 2MB',
+      'shrink image to 2MB free',
+      'downsize image to 2MB',
+      '2MB photo compressor',
+    ],
+    searchIntent: 'Transactional / Utility – compress heavy uncompressed smartphone RAW/photos to under 2MB for upload portals with a 2MB maximum limit.',
+    longTailKeywords: [
+      'how to compress picture to under 2MB online free',
+      'reduce 15MB photo to 2MB for job portal',
+      'free tool to make image less than 2MB',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'compress',
     defaultFormat: 'image/jpeg',
@@ -353,9 +602,9 @@ export const TOOLS_DATA: ToolDef[] = [
     shortDesc: 'Ensure your photos fit 2MB upload limits on portals and forums.',
     benefits: [
       'Guarantees your file size remains strictly under 2 MB',
-      'Maintains ultra-high resolution dimensions',
-      'Supports batch files and ZIP download',
-      'Private client-side execution',
+      'Maintains ultra-high resolution dimensions for pristine clarity',
+      'Supports batch files and one-click ZIP download',
+      'Private client-side execution with zero cloud storage',
     ],
     stepGuide: [
       { step: '1', title: 'Select Images', desc: 'Add images exceeding 2MB.' },
@@ -366,18 +615,45 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>Many online forms and legacy servers enforce a rigid 2 MB post limit. QuickPixel Tools provides an instant solution to meet this requirement without degrading your photograph.</p>
     `,
     whyUseHtml: `<p>Avoid upload rejections on portals by ensuring your documents and photos are safely under the 2MB ceiling.</p>`,
+    commonUseCases: [
+      { title: 'Job Application Portals', desc: 'Upload high-resolution headshots to ATS systems that enforce 2MB upload ceilings.' },
+      { title: 'Discussion Forums & Wikis', desc: 'Post screenshots and photos to online communities with 2MB attachment limits.' },
+      { title: 'Freelance Marketplace Deliveries', desc: 'Deliver preview files to clients through messaging platforms capped at 2MB.' },
+    ],
     faqs: [
       { question: 'Can I compress multiple files to 2MB simultaneously?', answer: 'Yes, batch upload as many photos as you want and each will be compressed to under 2MB.' },
+      { question: 'Will my 2MB photo still look sharp on desktop?', answer: 'Yes, 2 MB provides generous capacity for 4K resolution images with maximum color fidelity.' },
+      { question: 'Can I compress PNGs to 2MB?', answer: 'Yes, PNG files will be optimized and converted to high-quality JPEG to comfortably meet the 2MB ceiling.' },
+      { question: 'Does it take long to process?', answer: 'No, in-browser WebAssembly processing takes under 100 milliseconds per photo.' },
     ],
     relatedSlugs: ['compress-image-to-1mb', 'compress-image-to-500kb', 'image-compressor'],
   },
   {
     slug: 'image-resizer',
     name: 'Image Resizer',
-    metaTitle: 'Resize Image Online – Free Image Resizer | QuickPixel Tools',
+    metaTitle: 'Image Resizer Online – Resize Images & Photos Free | QuickPixel Tools',
     metaDescription: 'Resize images online for free. Change image dimensions by width, height, or percentage while maintaining aspect ratio. Fast, accurate, and private.',
     h1: 'Free Online Image Resizer',
     subtitle: 'Easily change photo dimensions in pixels or percentage with aspect ratio lock and social media presets.',
+    primaryKeyword: 'image resizer online',
+    secondaryKeywords: [
+      'resize image online',
+      'free image resizer',
+      'change image dimensions',
+      'resize photo online free',
+      'resize picture pixels',
+      'scale image online',
+      'photo dimension changer',
+    ],
+    searchIntent: 'Transactional / Utility – change the width and height pixel dimensions or percentage of images while maintaining aspect ratio.',
+    longTailKeywords: [
+      'how to resize image pixels online without losing quality',
+      'resize photo for Instagram and YouTube online free',
+      'change image dimensions with aspect ratio lock',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['Original Format', 'JPG', 'PNG', 'WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'resizing',
     defaultMode: 'resize',
     defaultFormat: 'original',
@@ -386,10 +662,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Maximize2',
     shortDesc: 'Change pixel dimensions, scale percentages, or choose social media presets.',
     benefits: [
-      'Change width and height with automatic aspect ratio lock',
+      'Change width and height with automatic aspect ratio lock to prevent stretching',
       'Scale by exact percentages: 25%, 50%, 75%, 150%, 200%',
       'One-click presets: Instagram, YouTube, Full HD, Web Banner',
-      'High-quality bicubic interpolation canvas rendering',
+      'High-quality bicubic interpolation canvas rendering for crisp edges',
     ],
     stepGuide: [
       { step: '1', title: 'Upload Image to Resize', desc: 'Drop any photo or graphic into the resizer tool.' },
@@ -402,10 +678,16 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Displaying an oversized 4000x3000 image inside a 400x300 container wastes CPU rendering cycles and bandwidth. Resizing images to their exact display dimensions is one of the highest-impact performance improvements you can make.</p>
     `,
+    commonUseCases: [
+      { title: 'Social Media Posts & Banners', desc: 'Resize graphics to Instagram Square (1080x1080), YouTube thumbnails (1280x720), or LinkedIn banners.' },
+      { title: 'Website Optimization', desc: 'Scale oversized camera photos to match website layout breakpoints (e.g. 1920px max width).' },
+      { title: 'Email Templates', desc: 'Ensure header images match typical 600px email newsletter constraints.' },
+    ],
     faqs: [
       { question: 'How do I resize an image online for free?', answer: 'Upload your photo to QuickPixel Tools Image Resizer, enter your target width or height (or pick a preset), and click Download.' },
       { question: 'Will resizing change the aspect ratio?', answer: 'By default, the aspect ratio lock is enabled so the height adjusts automatically when you change width, preventing distortion. You can unlock it anytime for custom dimensions.' },
       { question: 'Can I resize photos for Instagram or YouTube?', answer: 'Yes! QuickPixel includes one-click presets for Instagram Square (1080x1080), Stories (1080x1920), YouTube Thumbnails (1280x720), and more.' },
+      { question: 'Does resizing reduce image file size?', answer: 'Yes! Downscaling pixel dimensions (e.g., from 4000px down to 1920px) reduces the pixel count by over 75%, resulting in dramatically smaller file sizes.' },
     ],
     relatedSlugs: ['image-compressor', 'image-cropper', 'jpg-to-png', 'compress-image-to-200kb'],
   },
@@ -416,6 +698,24 @@ export const TOOLS_DATA: ToolDef[] = [
     metaDescription: 'Convert JPG to PNG online for free. Transform JPEG images into lossless PNG format with crisp graphics and sharp text. Fast browser converter.',
     h1: 'JPG to PNG Converter Online Free',
     subtitle: 'Convert JPEG photos to high-quality PNG format instantly without installing software.',
+    primaryKeyword: 'JPG to PNG converter',
+    secondaryKeywords: [
+      'convert JPG to PNG online',
+      'free JPG to PNG',
+      'change JPG to PNG',
+      'JPG to PNG high quality',
+      'JPEG to PNG converter',
+      'batch convert JPG to PNG',
+    ],
+    searchIntent: 'Transactional / Utility – convert lossy JPEG photos into lossless PNG format for graphics editing, overlays, and crisp text reproduction.',
+    longTailKeywords: [
+      'how to convert JPG to PNG online free without watermark',
+      'batch convert JPEG to PNG in high quality',
+      'change JPG format to PNG in browser',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG'],
+    supportedOutputFormats: ['PNG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/png',
@@ -424,10 +724,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Repeat',
     shortDesc: 'Convert lossy JPG photos to lossless, universally compatible PNG format.',
     benefits: [
-      'Lossless pixel reconstruction from JPEG source',
+      'Lossless pixel reconstruction from JPEG source image',
       'Batch convert multiple JPG files in a single pass',
-      'No registration, watermarks, or file limits',
-      'Processed completely on your computer or mobile device',
+      'No registration, watermarks, or artificial file limits',
+      'Processed completely on your computer or mobile device for 100% privacy',
     ],
     stepGuide: [
       { step: '1', title: 'Upload JPG Files', desc: 'Select one or more .jpg or .jpeg images.' },
@@ -440,19 +740,44 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Whenever you need to bring photos into tools like Figma, Illustrator, or Canva without suffering further JPEG degradation, converting to PNG is recommended.</p>
     `,
+    commonUseCases: [
+      { title: 'Graphic Design Workflows', desc: 'Import photos into Figma, Photoshop, or Canva without compounding lossy JPEG artifacts.' },
+      { title: 'Text & Diagram Overlays', desc: 'Add sharp vector text or callouts onto photos without edge distortion.' },
+      { title: 'Icon & UI Mockups', desc: 'Convert reference photos to PNG format for app design systems.' },
+    ],
     faqs: [
       { question: 'Does converting JPG to PNG make the background transparent?', answer: 'JPG files do not have transparency data (they have solid white or colored backgrounds). Converting to PNG preserves the exact image pixels. To make it transparent, you can edit it in your design software after conversion.' },
       { question: 'Why did the file size increase after converting JPG to PNG?', answer: 'PNG uses lossless compression while JPG is lossy. PNG stores precise RGB values for every pixel, so file sizes are naturally larger than compressed JPEGs.' },
+      { question: 'Can I batch convert dozens of JPGs to PNG?', answer: 'Yes! Upload multiple files at once and download all converted PNGs in a convenient ZIP archive.' },
+      { question: 'Is my data safe during conversion?', answer: 'Yes. All conversion happens locally inside your browser memory; your images are never sent to external servers.' },
     ],
     relatedSlugs: ['png-to-jpg', 'jpg-to-webp', 'image-compressor', 'image-resizer'],
   },
   {
     slug: 'png-to-jpg',
     name: 'PNG to JPG',
-    metaTitle: 'PNG to JPG Converter – Free Online Image Converter | QuickPixel Tools',
+    metaTitle: 'PNG to JPG Converter – Convert Images Online Free | QuickPixel Tools',
     metaDescription: 'Convert PNG to JPG online for free. Drastically reduce file sizes by turning PNGs into compact JPEGs with clean white backgrounds. Fast and secure.',
     h1: 'PNG to JPG Converter Online Free',
     subtitle: 'Convert heavy PNG graphics to lightweight JPG photos with customizable compression quality.',
+    primaryKeyword: 'PNG to JPG converter',
+    secondaryKeywords: [
+      'convert PNG to JPG online',
+      'free PNG to JPG',
+      'change PNG to JPEG',
+      'turn PNG into JPG',
+      'batch PNG to JPG converter',
+      'PNG to JPG high quality',
+    ],
+    searchIntent: 'Transactional / Utility – convert heavy PNG files into lightweight, universally compatible JPG files for faster loading and smaller file sizes.',
+    longTailKeywords: [
+      'how to convert transparent PNG to JPG with white background',
+      'convert PNG screenshots to JPG online free',
+      'batch convert PNG to JPEG to reduce file size',
+    ],
+    supportedInputFormats: ['PNG'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/jpeg',
@@ -461,14 +786,14 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Repeat',
     shortDesc: 'Convert large PNG images into compact, web-friendly JPG files.',
     benefits: [
-      'Cuts file size by up to 70% compared to heavy PNGs',
-      'Automatic clean white background fill for transparent areas',
+      'Cuts file size by up to 70% compared to heavy uncompressed PNGs',
+      'Automatic clean white background fill for transparent areas without black artifacts',
       'Batch conversion with one-click ZIP download',
-      'Fast client-side processing keeps your images secure',
+      'Fast client-side processing keeps your images secure and private',
     ],
     stepGuide: [
       { step: '1', title: 'Upload PNG Files', desc: 'Drag and drop your .png screenshots, graphics, or photos.' },
-      { step: '2', title: 'Set Quality Level', desc: 'Select your preferred JPG quality (80% recommended).' },
+      { step: '2', title: 'Set Quality Level', desc: 'Select your preferred JPG quality (85% recommended).' },
       { step: '3', title: 'Download JPG Files', desc: 'Download your lightweight JPGs immediately.' },
     ],
     overviewHtml: `
@@ -477,9 +802,16 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Standardizing all user-uploaded screenshots and images into JPG format saves massive server storage space and accelerates web page loading.</p>
     `,
+    commonUseCases: [
+      { title: 'Operating System Screenshots', desc: 'Convert 8MB macOS or Windows desktop PNG screenshots to 600KB JPGs for rapid sharing.' },
+      { title: 'Email Attachments', desc: 'Ensure graphics open quickly in all email clients without hitting size caps.' },
+      { title: 'Web Upload Compliance', desc: 'Submit photos to forums and portals that only accept JPG/JPEG formats.' },
+    ],
     faqs: [
       { question: 'What happens to transparent backgrounds when converting PNG to JPG?', answer: 'Since JPG does not support alpha transparency, transparent areas are smoothly filled with a clean white background.' },
       { question: 'How much smaller is a JPG compared to a PNG?', answer: 'Typically, a photographic PNG converted to JPG will be 60% to 80% smaller with almost identical visual fidelity.' },
+      { question: 'Can I convert multiple PNGs at once?', answer: 'Yes! Batch upload as many PNG images as you need and download them all as a single ZIP archive.' },
+      { question: 'Does this tool leave watermarks on images?', answer: 'Never. QuickPixel Tools is 100% watermark-free.' },
     ],
     relatedSlugs: ['jpg-to-png', 'png-to-webp', 'image-compressor', 'compress-jpg'],
   },
@@ -488,8 +820,26 @@ export const TOOLS_DATA: ToolDef[] = [
     name: 'JPG to WebP',
     metaTitle: 'JPG to WebP Converter – Convert Images Online Free | QuickPixel Tools',
     metaDescription: 'Convert JPG to WebP online for free. Transform JPEG images into Google modern WebP format for 30% smaller file sizes and superior web speed.',
-    h1: 'JPG to WebP Converter Online',
+    h1: 'JPG to WebP Converter Online Free',
     subtitle: 'Upgrade your JPEG images to next-gen WebP format for faster websites and better SEO rankings.',
+    primaryKeyword: 'JPG to WebP converter',
+    secondaryKeywords: [
+      'convert JPG to WebP online',
+      'free JPG to WebP',
+      'change JPEG to WebP',
+      'turn JPG into WebP',
+      'next-gen image converter',
+      'batch JPG to WebP converter',
+    ],
+    searchIntent: 'Transactional / Utility – convert JPEG photos into Google modern WebP format to save 30%+ storage and bandwidth for web pages.',
+    longTailKeywords: [
+      'how to convert JPG to WebP for Google PageSpeed',
+      'batch convert JPEG photos to WebP online free',
+      'best free JPG to WebP image converter',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG'],
+    supportedOutputFormats: ['WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/webp',
@@ -501,7 +851,7 @@ export const TOOLS_DATA: ToolDef[] = [
       'Achieve 25%–35% smaller file size than original JPG at identical quality',
       'Pass Google PageSpeed "Serve images in next-gen formats" audit',
       'Batch convert entire image galleries at once',
-      'Direct browser-side encoding with zero lag',
+      'Direct browser-side encoding with zero lag and total confidentiality',
     ],
     stepGuide: [
       { step: '1', title: 'Upload JPG Images', desc: 'Select JPG or JPEG files to convert.' },
@@ -514,18 +864,44 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Upgrading your website images from JPG to WebP reduces bandwidth bills and noticeably boosts mobile user retention.</p>
     `,
+    commonUseCases: [
+      { title: 'Google Lighthouse Score Optimization', desc: 'Resolve the "Serve images in next-gen formats" diagnostic in Google PageSpeed.' },
+      { title: 'WordPress & Web Publishing', desc: 'Speed up blog page loading to improve bounce rates and SEO ranking signals.' },
+      { title: 'Mobile App Graphics', desc: 'Deliver faster image caching for mobile users on cellular networks.' },
+    ],
     faqs: [
       { question: 'Why should I convert JPG to WebP?', answer: 'WebP provides superior compression technology compared to 30-year-old JPEG algorithms, resulting in 25-35% smaller files at identical visual quality.' },
+      { question: 'Do all browsers support WebP?', answer: 'Yes! Over 97% of global web browsers, including Chrome, Safari, Firefox, and Edge, natively support WebP.' },
+      { question: 'Can I convert multiple JPGs to WebP in bulk?', answer: 'Yes, you can drop dozens of JPG photos at once and download them converted in a ZIP folder.' },
+      { question: 'Is WebP lossy or lossless?', answer: 'WebP supports both! When converting from JPG, lossy WebP provides massive compression with stellar image fidelity.' },
     ],
     relatedSlugs: ['webp-to-jpg', 'png-to-webp', 'compress-webp', 'image-compressor'],
   },
   {
     slug: 'png-to-webp',
     name: 'PNG to WebP',
-    metaTitle: 'PNG to WebP Converter – Convert Images Online Free | QuickPixel Tools',
+    metaTitle: 'PNG to WebP Converter – Convert with Transparency Free | QuickPixel Tools',
     metaDescription: 'Convert PNG to WebP online for free. Maintain full transparency while slashing PNG file sizes by up to 50%. Fast browser-based conversion.',
-    h1: 'PNG to WebP Converter Online',
+    h1: 'PNG to WebP Converter Online Free',
     subtitle: 'Slash transparent PNG file sizes in half by converting to modern WebP with full alpha transparency.',
+    primaryKeyword: 'PNG to WebP converter',
+    secondaryKeywords: [
+      'convert PNG to WebP online',
+      'free PNG to WebP',
+      'change PNG to WebP with transparency',
+      'PNG to WebP transparent',
+      'turn PNG into WebP',
+      'batch PNG to WebP',
+    ],
+    searchIntent: 'Transactional / Utility – convert transparent PNG graphics into lightweight transparent WebP files for rapid web rendering.',
+    longTailKeywords: [
+      'how to convert transparent PNG to WebP online',
+      'reduce PNG file size using WebP with transparency',
+      'free batch PNG to WebP converter in browser',
+    ],
+    supportedInputFormats: ['PNG'],
+    supportedOutputFormats: ['WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/webp',
@@ -534,10 +910,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Sparkles',
     shortDesc: 'Convert PNG to transparent WebP, reducing file size by up to 60%.',
     benefits: [
-      'Preserves 100% alpha transparency with vastly smaller footprints',
+      'Preserves 100% alpha transparency with vastly smaller file footprints',
       'Cuts heavy transparent PNG graphics down by up to 60%',
-      'Batch conversion support with ZIP download',
-      'Fast client-side execution',
+      'Batch conversion support with one-click ZIP download',
+      'Fast client-side execution with zero cloud storage',
     ],
     stepGuide: [
       { step: '1', title: 'Upload PNGs', desc: 'Add transparent PNG logos, icons, or design graphics.' },
@@ -548,18 +924,44 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>WebP supports 24-bit RGB with an 8-bit alpha channel just like PNG, but compresses it with modern intra-frame prediction algorithms. The result is transparent graphics that look indistinguishable from PNG at a fraction of the kilobyte weight.</p>
     `,
     whyUseHtml: `<p>Fix heavy PNG headers and icons dragging down your web pages by upgrading them to lightweight WebP.</p>`,
+    commonUseCases: [
+      { title: 'Website Logos & Header Graphics', desc: 'Render sharp transparent brand logos without weighing down initial page loads.' },
+      { title: 'App UI Icons & Badges', desc: 'Bundle hundreds of UI graphics with 50% lower application package sizes.' },
+      { title: 'Product Cutouts', desc: 'Display transparent e-commerce product photos over colored backgrounds seamlessly.' },
+    ],
     faqs: [
       { question: 'Does WebP support transparent backgrounds like PNG?', answer: 'Yes! WebP provides full 8-bit alpha channel transparency support just like PNG, but with much higher compression efficiency.' },
+      { question: 'How much smaller is WebP compared to PNG?', answer: 'WebP files with transparency are typically 40% to 60% smaller than equivalent PNG files.' },
+      { question: 'Will text and icons look blurry after converting to WebP?', answer: 'No. WebP preserves sharp contrast edges around text, vector badges, and transparent boundaries.' },
+      { question: 'Is my uploaded PNG private?', answer: 'Yes! The entire conversion pipeline runs directly on your device in your web browser.' },
     ],
     relatedSlugs: ['jpg-to-webp', 'webp-to-png', 'compress-png', 'image-compressor'],
   },
   {
     slug: 'webp-to-jpg',
     name: 'WebP to JPG',
-    metaTitle: 'WebP to JPG Converter – Free Online Image Converter | QuickPixel Tools',
+    metaTitle: 'WebP to JPG Converter – Convert Images Online Free | QuickPixel Tools',
     metaDescription: 'Convert WebP to JPG online for free. Transform WebP images into universally compatible JPEG photos for older software, Word, and print.',
     h1: 'WebP to JPG Converter Online Free',
     subtitle: 'Convert WebP images to universally supported JPG format in seconds.',
+    primaryKeyword: 'WebP to JPG converter',
+    secondaryKeywords: [
+      'convert WebP to JPG online',
+      'free WebP to JPG',
+      'change WebP to JPEG',
+      'turn WebP into JPG',
+      'WebP to JPG converter free',
+      'save WebP as JPG',
+    ],
+    searchIntent: 'Transactional / Utility – convert modern WebP images downloaded from websites back into universally compatible JPG files for viewing in legacy editors.',
+    longTailKeywords: [
+      'how to convert downloaded WebP file to JPG on Windows',
+      'convert WebP to JPG without losing quality free',
+      'batch convert WebP images to JPG format in browser',
+    ],
+    supportedInputFormats: ['WebP'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/jpeg',
@@ -570,7 +972,7 @@ export const TOOLS_DATA: ToolDef[] = [
     benefits: [
       '100% compatible with older photo viewers, Word docs, and printing software',
       'Fast client-side decoding and re-encoding',
-      'Batch convert multiple WebP files at once',
+      'Batch convert multiple WebP files at once with ZIP download',
       'Clean background fill for any transparent WebP inputs',
     ],
     stepGuide: [
@@ -582,18 +984,44 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>While WebP is great for browsers, many legacy desktop programs, photo editors, video editing suites, and email clients still cannot open .webp files. QuickPixel Tools WebP to JPG converter effortlessly turns downloaded WebP assets into universally readable JPEGs.</p>
     `,
     whyUseHtml: `<p>Never get stuck with an "Unsupported file format" error again when importing photos into presentations or print software.</p>`,
+    commonUseCases: [
+      { title: 'Legacy Desktop Software', desc: 'Open downloaded web photos in older editions of Microsoft Office, Photoshop, or Windows Photo Viewer.' },
+      { title: 'Printing Services', desc: 'Submit photos to commercial print shops that require standard JPEG files.' },
+      { title: 'Social Media & Forum Sharing', desc: 'Share images to platforms that do not yet support WebP uploads.' },
+    ],
     faqs: [
       { question: 'Why do I need to convert WebP to JPG?', answer: 'Some desktop programs, legacy photo editors, and older devices cannot open WebP files. Converting to JPG ensures 100% compatibility everywhere.' },
+      { question: 'What happens to transparency when converting WebP to JPG?', answer: 'Since JPG does not support transparency, transparent areas are automatically filled with a clean white background.' },
+      { question: 'Can I batch convert WebP files?', answer: 'Yes! Drag multiple WebP images into the converter and download all JPGs as a ZIP archive.' },
+      { question: 'Is the conversion processed privately?', answer: 'Yes, all processing occurs directly in your browser. No files are uploaded to our servers.' },
     ],
     relatedSlugs: ['jpg-to-webp', 'webp-to-png', 'image-compressor'],
   },
   {
     slug: 'webp-to-png',
     name: 'WebP to PNG',
-    metaTitle: 'WebP to PNG Converter – Free Online Image Converter | QuickPixel Tools',
+    metaTitle: 'WebP to PNG Converter – Convert Images Online Free | QuickPixel Tools',
     metaDescription: 'Convert WebP to PNG online for free. Convert WebP images to high-resolution PNG format with full transparency preservation. Fast and private.',
     h1: 'WebP to PNG Converter Online Free',
     subtitle: 'Convert WebP images into transparent PNG format for easy editing in Photoshop, Illustrator, and Canva.',
+    primaryKeyword: 'WebP to PNG converter',
+    secondaryKeywords: [
+      'convert WebP to PNG online',
+      'free WebP to PNG',
+      'change WebP to PNG with transparency',
+      'save WebP as PNG',
+      'turn WebP into PNG',
+      'batch WebP to PNG',
+    ],
+    searchIntent: 'Transactional / Utility – convert WebP files into standard PNG format preserving transparent backgrounds for Photoshop, Illustrator, and presentation slides.',
+    longTailKeywords: [
+      'how to convert transparent WebP to PNG online free',
+      'convert WebP to PNG without losing transparent background',
+      'batch convert WebP to PNG for Photoshop editing',
+    ],
+    supportedInputFormats: ['WebP'],
+    supportedOutputFormats: ['PNG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/png',
@@ -602,10 +1030,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Repeat',
     shortDesc: 'Convert WebP into high-quality PNG with transparency intact.',
     benefits: [
-      'Preserves transparent alpha layers flawlessly',
-      'Ideal for importing WebP assets into Photoshop or Figma',
-      'No quality loss during conversion',
-      'Batch conversion support',
+      'Preserves transparent alpha layers flawlessly for graphic designers',
+      'Ideal for importing WebP assets into Photoshop, Illustrator, or Figma',
+      'No quality loss during conversion with exact pixel mapping',
+      'Batch conversion support with one-click ZIP download',
     ],
     stepGuide: [
       { step: '1', title: 'Select WebP Images', desc: 'Upload your .webp graphics.' },
@@ -616,18 +1044,44 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>Need to edit a transparent WebP graphic in software that doesn't support WebP? QuickPixel Tools extracts the image and renders it into a standard PNG format with pixel-perfect transparency intact.</p>
     `,
     whyUseHtml: `<p>Effortlessly reuse web graphics across desktop illustration and vector design software.</p>`,
+    commonUseCases: [
+      { title: 'Graphic Design & Vector Software', desc: 'Import web assets into Illustrator, InDesign, or older Photoshop releases.' },
+      { title: 'PowerPoint & Keynote Slides', desc: 'Insert transparent logos and illustrations into presentations without format warnings.' },
+      { title: 'Print & Merch Mockups', desc: 'Prepare web art for print-on-demand services that require PNG format.' },
+    ],
     faqs: [
       { question: 'Will transparency be preserved when converting WebP to PNG?', answer: 'Yes! QuickPixel Tools preserves the full alpha transparency layer from your WebP image.' },
+      { question: 'Will the PNG image lose any quality?', answer: 'No. PNG is a lossless format, so every pixel decoded from your WebP image is preserved identically.' },
+      { question: 'Can I convert multiple WebP files at once?', answer: 'Yes, batch upload as many WebP images as you need and download all PNGs together.' },
+      { question: 'Do I need to sign up to use this converter?', answer: 'No registration, subscriptions, or personal data are required.' },
     ],
     relatedSlugs: ['png-to-webp', 'webp-to-jpg', 'image-compressor'],
   },
   {
     slug: 'heic-to-jpg',
     name: 'HEIC to JPG',
-    metaTitle: 'HEIC to JPG Converter – Convert iPhone Photos Online | QuickPixel Tools',
+    metaTitle: 'HEIC to JPG Converter – Convert iPhone Photos Free | QuickPixel Tools',
     metaDescription: 'Convert HEIC to JPG online for free. Transform Apple iPhone photos (.heic) into universally compatible JPEG format right in your browser. Fast and private.',
     h1: 'HEIC to JPG Converter Online Free',
     subtitle: 'Convert iPhone and iPad HEIC photos to standard JPG format without uploading to external servers.',
+    primaryKeyword: 'HEIC to JPG converter',
+    secondaryKeywords: [
+      'convert HEIC to JPG online',
+      'free HEIC to JPG',
+      'iPhone photo to JPG',
+      'HEIC to JPEG converter free',
+      'batch HEIC to JPG',
+      'Apple HEIC converter online',
+    ],
+    searchIntent: 'Transactional / Utility – convert Apple iPhone and iPad HEIC camera photos into standard universal JPG files viewable on Windows, Android, and web.',
+    longTailKeywords: [
+      'how to convert iPhone HEIC photos to JPG on Windows PC',
+      'convert HEIC to JPG online without uploading to server',
+      'batch convert iPhone photos from HEIC to JPEG free',
+    ],
+    supportedInputFormats: ['HEIC', 'HEIF'],
+    supportedOutputFormats: ['JPG'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'conversion',
     defaultMode: 'convert',
     defaultFormat: 'image/jpeg',
@@ -636,10 +1090,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Smartphone',
     shortDesc: 'Convert Apple iPhone HEIC pictures to universal JPG format.',
     benefits: [
-      'Converts Apple High Efficiency Image Container (.heic) seamlessly',
+      'Converts Apple High Efficiency Image Container (.heic) files seamlessly',
       'Makes iPhone snapshots viewable on Windows, Android, and older Macs',
       'Batch convert dozens of iPhone photos simultaneously',
-      'Maintains original photo resolution and vibrant colors',
+      'Maintains original photo resolution and vibrant colors without degradation',
     ],
     stepGuide: [
       { step: '1', title: 'Upload HEIC Photos', desc: 'Choose .heic or .heif files exported from your iPhone or iPad.' },
@@ -652,19 +1106,44 @@ export const TOOLS_DATA: ToolDef[] = [
     whyUseHtml: `
       <p>Never worry about sending an unopenable photo to a client or upload portal again. QuickPixel Tools makes HEIC conversion painless and instantaneous.</p>
     `,
+    commonUseCases: [
+      { title: 'Windows PC Compatibility', desc: 'Open and edit iPhone photos on Windows laptops without buying HEIC codecs from the app store.' },
+      { title: 'Government & Job Portals', desc: 'Submit ID photos taken with an iPhone to web portals that reject .heic extensions.' },
+      { title: 'Family Photo Sharing', desc: 'Send photos to relatives on Android phones or older computers without compatibility issues.' },
+    ],
     faqs: [
       { question: 'What is a HEIC file?', answer: 'HEIC is Apple proprietary photo container format used on iPhones running iOS 11 and later. It saves space on your device but is incompatible with many Windows and web systems.' },
       { question: 'Is it safe to convert private iPhone photos here?', answer: 'Yes! QuickPixel Tools processes photos locally in your browser. Your private camera roll images are never uploaded to any cloud server.' },
+      { question: 'Can I convert multiple HEIC photos at once?', answer: 'Yes, select multiple HEIC photos from your phone or PC and download all converted JPGs in a single ZIP.' },
+      { question: 'Does HEIC to JPG conversion reduce photo resolution?', answer: 'No, the full pixel dimensions (e.g. 12MP or 48MP) are preserved throughout the conversion.' },
     ],
     relatedSlugs: ['jpg-to-png', 'compress-jpg', 'image-compressor', 'image-resizer'],
   },
   {
     slug: 'image-to-pdf',
     name: 'Image to PDF',
-    metaTitle: 'Image to PDF Converter – Convert Images to PDF Free | QuickPixel Tools',
+    metaTitle: 'Image to PDF Converter – Convert Photos to PDF Free | QuickPixel Tools',
     metaDescription: 'Convert JPG, PNG, and WebP images into a single PDF document online for free. Set page orientation, margins, and download high-quality PDFs instantly.',
     h1: 'Image to PDF Converter Online Free',
     subtitle: 'Combine photos, receipts, notes, and scans into a clean, professional PDF document in seconds.',
+    primaryKeyword: 'image to PDF converter',
+    secondaryKeywords: [
+      'convert image to PDF online',
+      'photos to PDF free',
+      'JPG to PDF converter',
+      'combine images into PDF',
+      'picture to PDF online',
+      'batch photos to PDF',
+    ],
+    searchIntent: 'Transactional / Utility – convert single or multiple photos (JPG, PNG) into a clean, multi-page or single-page PDF document.',
+    longTailKeywords: [
+      'how to convert multiple images into one PDF document online',
+      'convert JPG photos to PDF free without watermark',
+      'merge receipt images into a single PDF file in browser',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['PDF'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'pdf',
     defaultMode: 'pdf',
     defaultFormat: 'image/jpeg',
@@ -673,10 +1152,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'FileText',
     shortDesc: 'Merge multiple JPG, PNG, and WebP images into a single polished PDF file.',
     benefits: [
-      'Combine multiple image files into a single multipage PDF',
+      'Combine multiple image files into a single unified multipage PDF',
       'Configurable page orientation (Portrait, Landscape, or Auto)',
-      'Preserves crisp clarity for receipts, invoices, and documents',
-      'No watermark, no page limits, 100% free and client-side',
+      'Preserves crisp clarity for receipts, invoices, notes, and scanned documents',
+      'No watermark, no page limits, 100% free and client-side executed',
     ],
     stepGuide: [
       { step: '1', title: 'Upload Images', desc: 'Select the photos, receipts, or scans you want in your PDF.' },
@@ -687,19 +1166,44 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>QuickPixel Tools Image to PDF converter turns digital photos, scanned paperwork, school assignments, and invoices into unified, standardized PDF documents. Everything is generated client-side using JavaScript, ensuring your financial receipts and personal records remain private on your computer.</p>
     `,
     whyUseHtml: `<p>Colleges, embassies, and accounting departments frequently require documents submitted in PDF rather than loose image files. Generate compliant PDFs in seconds.</p>`,
+    commonUseCases: [
+      { title: 'Expense Reports & Receipts', desc: 'Combine photos of business trip receipts into a single PDF document for accounting.' },
+      { title: 'Academic Assignments', desc: 'Turn photos of handwritten homework pages into a unified PDF submission for professors.' },
+      { title: 'Legal & Visa Documents', desc: 'Assemble passport copies, utility bills, and bank statements into one neat dossier.' },
+    ],
     faqs: [
       { question: 'How do I convert images to PDF for free?', answer: 'Upload one or multiple photos to QuickPixel Tools Image to PDF converter, choose your page orientation, and click "Generate & Download PDF".' },
       { question: 'Can I combine multiple pictures into one PDF file?', answer: 'Yes! You can upload multiple JPG, PNG, and WebP photos and they will be compiled into a single multi-page PDF document.' },
+      { question: 'Is there a limit on how many images I can convert to PDF?', answer: 'No artificial limit! Your browser builds the PDF locally so you can merge as many pages as your system memory allows.' },
+      { question: 'Are my confidential documents uploaded to a server?', answer: 'No. The PDF generation is done entirely on your device with JavaScript; your sensitive documents never touch external cloud disks.' },
     ],
     relatedSlugs: ['image-compressor', 'image-resizer', 'jpg-to-png'],
   },
   {
     slug: 'image-cropper',
     name: 'Image Cropper',
-    metaTitle: 'Image Cropper – Crop Images Online Free | QuickPixel Tools',
+    metaTitle: 'Image Cropper Online – Crop Photos & Images Free | QuickPixel Tools',
     metaDescription: 'Crop JPG, PNG, and WebP images online for free. Cut photos with precision aspect ratios (1:1, 4:3, 16:9, or freeform). Fast, browser-based photo cropper.',
     h1: 'Free Online Image Cropper',
     subtitle: 'Easily crop photos to exact dimensions or popular aspect ratios with live visual preview.',
+    primaryKeyword: 'image cropper online',
+    secondaryKeywords: [
+      'crop image online free',
+      'crop photo online',
+      'picture cropper',
+      'free photo crop tool',
+      'crop JPG online',
+      'crop square image online',
+    ],
+    searchIntent: 'Transactional / Utility – crop photos to custom aspect ratios (1:1 square, 16:9 widescreen, 4:3) or custom bounding boxes right in the browser.',
+    longTailKeywords: [
+      'how to crop a picture into a square online for free',
+      'crop photo for LinkedIn avatar and profile picture',
+      'free online tool to crop images without quality loss',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['Original Format', 'JPG', 'PNG', 'WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'editing',
     defaultMode: 'crop',
     defaultFormat: 'original',
@@ -708,10 +1212,10 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Crop',
     shortDesc: 'Trim photos with precision aspect ratios (Square 1:1, 16:9, 4:3, Freeform).',
     benefits: [
-      'Standard aspect ratios: Square (1:1), Landscape (16:9), Photo (4:3), Freeform',
+      'Standard aspect ratios: Square (1:1), Landscape (16:9), Photo (4:3), and Freeform',
       'Live interactive draggable crop box with pixel coordinate readout',
-      'High-resolution canvas export preserves original clarity',
-      'Free, private, and works on desktop and mobile',
+      'High-resolution canvas export preserves original clarity without degradation',
+      'Free, private, and works on desktop and mobile browsers alike',
     ],
     stepGuide: [
       { step: '1', title: 'Upload Image to Crop', desc: 'Select the image you want to trim.' },
@@ -722,19 +1226,44 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>Whether you need a square avatar for your LinkedIn profile, a 16:9 banner for a presentation, or want to eliminate unwanted background clutter from a photo, QuickPixel Tools Image Cropper provides a seamless, accurate cropping experience directly inside your browser.</p>
     `,
     whyUseHtml: `<p>Crop photos without opening heavyweight photo editors or uploading personal photos to suspicious cloud services.</p>`,
+    commonUseCases: [
+      { title: 'Social Media Avatars', desc: 'Frame headshots into perfect 1:1 squares for LinkedIn, Twitter/X, and Instagram.' },
+      { title: 'Presentation Slides', desc: 'Crop landscape photos into 16:9 widescreen format to fill PowerPoint and Keynote slides.' },
+      { title: 'Removing Background Clutter', desc: 'Cut away unwanted photo bombers, margins, or photo borders with pixel-level precision.' },
+    ],
     faqs: [
       { question: 'Does cropping reduce photo quality?', answer: 'No, cropping simply discards pixels outside your selected frame. The cropped area maintains 100% of its original resolution.' },
       { question: 'Can I crop to a square 1:1 for profile pictures?', answer: 'Yes, select the 1:1 Square preset in the cropper settings for a perfect circle/square avatar.' },
+      { question: 'Can I crop custom non-standard dimensions?', answer: 'Yes! Select the Freeform mode and drag any handle to frame any custom rectangular dimension.' },
+      { question: 'Can I crop PNG images with transparency?', answer: 'Yes, transparent PNGs maintain their transparent layers when cropped.' },
     ],
     relatedSlugs: ['image-resizer', 'image-rotator', 'image-compressor'],
   },
   {
     slug: 'image-rotator',
     name: 'Image Rotator',
-    metaTitle: 'Image Rotator – Rotate & Flip Photos Online | QuickPixel Tools',
+    metaTitle: 'Image Rotator Online – Rotate & Flip Photos Free | QuickPixel Tools',
     metaDescription: 'Rotate and flip images online for free. Turn photos 90 degrees, 180 degrees, flip horizontally or vertically. Fast, browser-based image rotator.',
     h1: 'Rotate & Flip Images Online Free',
     subtitle: 'Quickly fix upside-down or sideways photos with one-click 90° rotation and horizontal/vertical mirror flipping.',
+    primaryKeyword: 'image rotator online',
+    secondaryKeywords: [
+      'rotate image online free',
+      'flip image online',
+      'rotate photo 90 degrees',
+      'turn picture upside down',
+      'rotate JPG online',
+      'horizontal flip image',
+    ],
+    searchIntent: 'Transactional / Utility – rotate photos 90°, 180°, 270° and flip horizontally or vertically to correct incorrect camera orientation.',
+    longTailKeywords: [
+      'how to rotate sideways photo permanently online free',
+      'flip picture horizontally like a mirror online',
+      'turn upside down picture right side up in browser',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['Original Format', 'JPG', 'PNG', 'WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'editing',
     defaultMode: 'rotate',
     defaultFormat: 'original',
@@ -744,8 +1273,8 @@ export const TOOLS_DATA: ToolDef[] = [
     shortDesc: 'Rotate 90°, 180°, or mirror flip images horizontally and vertically.',
     benefits: [
       'One-tap 90° clockwise and counter-clockwise rotation',
-      'Horizontal and vertical mirror flip',
-      'Fixes incorrect camera EXIF orientation tags permanently',
+      'Horizontal and vertical mirror flip tools',
+      'Fixes incorrect camera EXIF orientation tags permanently in canvas pixels',
       'Fast client-side rendering with zero quality loss',
     ],
     stepGuide: [
@@ -757,18 +1286,44 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>Smartphone cameras often record orientation tags in EXIF metadata rather than physically rotating pixels. When uploaded to certain websites or printed, the photo may display sideways or upside-down. QuickPixel Tools physically transforms the canvas pixels so your image displays upright everywhere.</p>
     `,
     whyUseHtml: `<p>Permanently fix rotated photos so they render upright in every browser, application, and operating system.</p>`,
+    commonUseCases: [
+      { title: 'Sideways Phone Photos', desc: 'Permanently orient portrait photos taken in landscape camera angles.' },
+      { title: 'Mirrored Selfies', desc: 'Flip front-facing camera selfies horizontally so t-shirt text and logos read correctly.' },
+      { title: 'Document Scans', desc: 'Turn upside-down or 90-degree rotated document scans right side up before emailing.' },
+    ],
     faqs: [
       { question: 'Why do my phone photos open sideways on my computer?', answer: 'Some programs do not read the camera EXIF orientation tag. QuickPixel physically alters the canvas pixels so the photo is permanently right-side up.' },
+      { question: 'Does rotating degrade the image quality?', answer: 'No. Pixel values are mapped onto a rotated canvas with high-fidelity rendering, ensuring zero visible distortion.' },
+      { question: 'Can I mirror flip an image horizontally?', answer: 'Yes! Tap the Flip Horizontal button to create an instant mirror image.' },
+      { question: 'Can I rotate multiple photos?', answer: 'Yes, upload multiple photos and orient them as needed before downloading.' },
     ],
     relatedSlugs: ['image-cropper', 'image-resizer', 'image-compressor'],
   },
   {
     slug: 'image-quality-reducer',
     name: 'Image Quality Reducer',
-    metaTitle: 'Image Quality Reducer – Reduce Image Size & DPI | QuickPixel Tools',
+    metaTitle: 'Image Quality Reducer – Lower Quality & Size Online Free | QuickPixel Tools',
     metaDescription: 'Reduce image quality and file size online for free. Adjust compression levels with precision slider control. Fast, private, and easy to use.',
     h1: 'Image Quality Reducer Online',
-    subtitle: 'Fine-tune image compression quality and DPI to reduce file size with precision control.',
+    subtitle: 'Fine-tune image compression quality and DPI to reduce file size with precision slider control.',
+    primaryKeyword: 'image quality reducer',
+    secondaryKeywords: [
+      'reduce image quality online',
+      'lower photo quality',
+      'decrease image quality online free',
+      'reduce picture resolution and quality',
+      'image quality adjuster',
+      'fine quality compressor',
+    ],
+    searchIntent: 'Transactional / Utility – fine-tune compression bitrate and quality percentages with an interactive precision slider to find the optimal trade-off between file size and clarity.',
+    longTailKeywords: [
+      'how to reduce image quality to lower file size online',
+      'adjust image compression percentage online free',
+      'decrease picture resolution and quality in browser',
+    ],
+    supportedInputFormats: ['JPG', 'JPEG', 'PNG', 'WebP', 'HEIC'],
+    supportedOutputFormats: ['Original Format', 'JPG', 'PNG', 'WebP'],
+    maxFileSize: 'Unlimited (up to 100MB per file recommended)',
     category: 'compression',
     defaultMode: 'quality_reduce',
     defaultFormat: 'original',
@@ -777,9 +1332,9 @@ export const TOOLS_DATA: ToolDef[] = [
     iconName: 'Sliders',
     shortDesc: 'Dial in precise compression percentages to control image weight.',
     benefits: [
-      'Fine-grained 1% to 100% quality slider',
-      'Real-time file size and kilobyte savings calculation',
-      'Side-by-side visual comparison',
+      'Fine-grained 1% to 100% quality slider for total compression control',
+      'Real-time file size calculation and kilobyte savings readout',
+      'Side-by-side visual comparison to detect artifact thresholds',
       'Zero server uploads for complete confidentiality',
     ],
     stepGuide: [
@@ -791,8 +1346,16 @@ export const TOOLS_DATA: ToolDef[] = [
       <p>QuickPixel Tools Image Quality Reducer provides an interactive slider to dial down the quantization bitrate of your photos. This allows you to explore the exact point where file size drops dramatically before visual quality noticeably degrades.</p>
     `,
     whyUseHtml: `<p>Gain complete control over visual fidelity versus kilobyte weight for mission-critical web optimization.</p>`,
+    commonUseCases: [
+      { title: 'Web Developer Byte Budgets', desc: 'Fine-tune hero images to fit strict performance budgets without guessing.' },
+      { title: 'Testing Visual Thresholds', desc: 'Find the lowest acceptable quality percentage before compression artifacts appear.' },
+      { title: 'Bandwidth Conservation', desc: 'Prepare lightweight graphics for users in regions with metered data plans.' },
+    ],
     faqs: [
       { question: 'How does reducing image quality affect the file?', answer: 'It simplifies color transitions and high-frequency noise that the human eye barely notices, shedding up to 80% of the byte data.' },
+      { question: 'What is the difference between quality reduction and resizing?', answer: 'Resizing changes the pixel dimensions (width x height), while quality reduction adjusts compression quantization keeping the same dimensions.' },
+      { question: 'Can I see the image before downloading?', answer: 'Yes! The before/after split slider updates in real time as you adjust the quality control.' },
+      { question: 'Is this tool free?', answer: 'Yes, 100% free with no limits or watermarks.' },
     ],
     relatedSlugs: ['image-compressor', 'compress-image-to-200kb', 'image-resizer'],
   },

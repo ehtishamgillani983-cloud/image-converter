@@ -32,6 +32,25 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     if (canonical) {
       canonical.setAttribute('content', `${getSiteOrigin()}/`);
     }
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'Compress, convert and resize JPG, PNG, WebP and other image formats online. Fast, free, and privacy-friendly. Process images in your browser.');
+    }
+
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute('content', 'free online image tools, online image compressor, convert image online, resize image online, free photo tools, browser image editor, image optimizer suite');
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'Free Online Image Compressor & Image Tools | QuickPixel Tools');
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', 'Compress, convert and resize JPG, PNG, WebP and other image formats online. Fast, free, and privacy-friendly.');
   }, []);
   const homeFaqs = [
     {
@@ -111,22 +130,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </p>
 
         {/* Action CTAs */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-sm sm:max-w-none mx-auto">
           <a
             href="#tool"
             onClick={(e) => {
               e.preventDefault();
               document.getElementById('tool-container')?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm rounded-xl shadow-sm transition-colors flex items-center gap-2"
+            className="w-full sm:w-auto min-h-[48px] px-6 py-3 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             <Zap className="w-4 h-4" />
-            Compress Image
+            Compress Image Free
           </a>
           <button
             type="button"
             onClick={() => onNavigate('/tools')}
-            className="px-6 py-2.5 bg-white hover:bg-slate-100 text-slate-700 font-bold text-sm rounded-xl border border-slate-300 transition-colors flex items-center gap-2"
+            className="w-full sm:w-auto min-h-[48px] px-6 py-3 bg-white hover:bg-slate-100 text-slate-700 font-bold text-sm rounded-xl border border-slate-300 transition-colors flex items-center justify-center gap-2 cursor-pointer"
           >
             Convert Image
             <ArrowRight className="w-4 h-4 text-slate-400" />
@@ -423,7 +442,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
-                <span>Use Tool</span>
+                <span>Use {tool.name}</span>
                 <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </div>
             </a>

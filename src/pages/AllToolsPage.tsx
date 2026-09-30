@@ -33,11 +33,48 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
   const [activeCategory, setActiveCategory] = useState(initialCategory);
 
   useEffect(() => {
-    document.title = 'All Online Image Tools – Free Image Optimizer Suite | QuickPixel Tools';
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute('content', `${getSiteOrigin()}/tools`);
+    document.title = 'All Image Tools – Free Compression, Conversion & Editing | QuickPixel Tools';
+
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
     }
+    metaDesc.setAttribute(
+      'content',
+      'Browse all 21 free online image tools by QuickPixel. Compress JPG and PNG, convert to WebP or PDF, resize dimensions, crop and rotate photos directly in your browser.',
+    );
+
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    metaKeywords.setAttribute(
+      'content',
+      'image tools directory, all image tools, online photo utilities list, free image converters list, image editing tools online',
+    );
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('content', `${getSiteOrigin()}/tools`);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', 'All Image Tools – Free Compression, Conversion & Editing | QuickPixel Tools');
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc)
+      ogDesc.setAttribute(
+        'content',
+        'Browse all 21 free online image tools by QuickPixel. Compress JPG and PNG, convert to WebP or PDF, resize dimensions, crop and rotate photos directly in your browser.',
+      );
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
@@ -67,28 +104,28 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
       {/* Search Bar & Filter Bar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
         {/* Search */}
-        <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="relative w-full sm:w-80">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search tools (e.g. 200KB, PNG, Resize)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-800"
+            className="w-full pl-10 pr-4 py-2.5 min-h-[44px] text-sm bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-slate-800"
           />
         </div>
 
         {/* Category Filter Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 no-scrollbar">
+        <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 no-scrollbar touch-pan-x">
           {TOOL_CATEGORIES.map((cat) => (
             <button
               key={cat.id}
               type="button"
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors whitespace-nowrap ${
+              className={`px-3.5 py-2 min-h-[40px] text-xs sm:text-sm font-semibold rounded-xl transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
                 activeCategory === cat.id
                   ? 'bg-blue-600 text-white shadow-2xs'
-                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 hover:text-slate-900 active:bg-slate-200'
               }`}
             >
               {cat.name}

@@ -125,8 +125,8 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onNavigate }) 
       </aside>
 
       {/* Main Formatted Article Content */}
-      <article className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-4">
-        <div dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
+      <article className="prose prose-slate max-w-none text-slate-700 leading-relaxed text-sm sm:text-base space-y-4 break-words overflow-x-hidden">
+        <div className="overflow-x-auto" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
       </article>
 
       {/* Polite Ad Placement */}

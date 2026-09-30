@@ -4,9 +4,6 @@
  * Everything runs 100% in the browser using HTML5 Canvas, WebAssembly & Blob APIs.
  */
 
-import { jsPDF } from 'jspdf';
-import JSZip from 'jszip';
-
 export interface ProcessOptions {
   mode: 'compress' | 'resize' | 'convert' | 'crop' | 'rotate' | 'quality_reduce' | 'pdf';
   quality: number; // 0.05 to 1.0
@@ -415,6 +412,7 @@ export async function convertImagesToPdf(
   images: { blob: Blob; name: string }[],
   orientation: 'portrait' | 'landscape' | 'auto' = 'auto',
 ): Promise<Blob> {
+  const { jsPDF } = await import('jspdf');
   const pdf = new jsPDF({
     unit: 'mm',
     format: 'a4',
@@ -503,6 +501,8 @@ export async function downloadAllAsZip(
   results: ProcessedResult[],
   archiveName: string = 'quickpixel-images.zip',
 ) {
+  const jszipModule = await import('jszip');
+  const JSZip = (jszipModule && 'default' in jszipModule ? jszipModule.default : jszipModule) as typeof import('jszip');
   const zip = new JSZip();
   results.forEach((res, index) => {
     const ext = res.format.toLowerCase() === 'jpeg' ? 'jpg' : res.format.toLowerCase();

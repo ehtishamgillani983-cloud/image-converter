@@ -1,15 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
-import { ToolPage } from './pages/ToolPage';
-import { AllToolsPage } from './pages/AllToolsPage';
-import { BlogHubPage } from './pages/BlogHubPage';
-import { BlogPostPage } from './pages/BlogPostPage';
-import { LegalPage } from './pages/LegalPage';
-import { NotFoundPage } from './pages/NotFoundPage';
 import { getToolBySlug } from './data/toolsData';
 import { getBlogPostBySlug } from './data/blogData';
+
+// Lazy load secondary routes to ensure fast mobile initial payload
+const ToolPage = lazy(() => import('./pages/ToolPage').then((m) => ({ default: m.ToolPage })));
+const AllToolsPage = lazy(() => import('./pages/AllToolsPage').then((m) => ({ default: m.AllToolsPage })));
+const BlogHubPage = lazy(() => import('./pages/BlogHubPage').then((m) => ({ default: m.BlogHubPage })));
+const BlogPostPage = lazy(() => import('./pages/BlogPostPage').then((m) => ({ default: m.BlogPostPage })));
+const LegalPage = lazy(() => import('./pages/LegalPage').then((m) => ({ default: m.LegalPage })));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })));
+
+const PageLoadingFallback: React.FC = () => (
+  <div className="flex items-center justify-center min-h-[45vh] w-full">
+    <div className="flex flex-col items-center gap-2.5">
+      <div className="w-7 h-7 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+      <span className="text-xs font-medium text-slate-500">Loading...</span>
+    </div>
+  </div>
+);
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -86,9 +97,13 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-800 antialiased">
+    <div className="flex flex-col min-h-screen bg-slate-50 font-sans text-slate-800 antialiased w-full overflow-x-hidden">
       <Header currentPath={currentPath} onNavigate={navigateTo} />
-      <main className="flex-1">{renderRoute()}</main>
+      <main className="flex-1 w-full overflow-x-hidden">
+        <Suspense fallback={<PageLoadingFallback />}>
+          {renderRoute()}
+        </Suspense>
+      </main>
       <Footer onNavigate={navigateTo} />
     </div>
   );

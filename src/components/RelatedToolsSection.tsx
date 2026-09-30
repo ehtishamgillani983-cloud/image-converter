@@ -69,6 +69,7 @@ export const RelatedToolsSection: React.FC<RelatedToolsSectionProps> = ({
               e.preventDefault();
               onNavigate(`/${tool.slug}`);
             }}
+            aria-label={`Open ${tool.name} tool`}
             className="group p-5 bg-white border border-slate-200/90 hover:border-blue-300 rounded-xl transition-all shadow-2xs hover:shadow-md flex flex-col justify-between"
           >
             <div>
@@ -89,7 +90,7 @@ export const RelatedToolsSection: React.FC<RelatedToolsSectionProps> = ({
             </div>
 
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-blue-600">
-              <span>Use Tool</span>
+              <span>Open {tool.name}</span>
               <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
             </div>
           </a>

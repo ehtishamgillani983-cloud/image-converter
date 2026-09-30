@@ -23,9 +23,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
           <a
             href="/"
             onClick={(e) => handleNav('/', e)}
-            className="flex items-center gap-2.5 group focus:outline-none"
+            className="flex items-center gap-2.5 group focus:outline-none min-h-[44px] py-1"
           >
-            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 group-hover:bg-blue-700 transition-colors">
+            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-sm shadow-blue-500/20 group-hover:bg-blue-700 transition-colors shrink-0">
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="4" />
                 <circle cx="8.5" cy="8.5" r="1.5" />
@@ -102,13 +102,14 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button (touch target >= 44x44px) */}
           <div className="flex md:hidden items-center">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 focus:outline-none"
-              aria-label="Toggle Navigation Menu"
+              className="w-11 h-11 flex items-center justify-center rounded-xl text-slate-700 hover:text-slate-900 hover:bg-slate-100 active:bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -116,56 +117,76 @@ export const Header: React.FC<HeaderProps> = ({ currentPath, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown Menu with backdrop */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-6 space-y-2 shadow-lg">
+        <div className="md:hidden border-b border-slate-200 bg-white/98 backdrop-blur-md px-4 pt-3 pb-6 space-y-1.5 shadow-xl animate-in fade-in slide-in-from-top-2 duration-200">
           <a
             href="/image-compressor"
             onClick={(e) => handleNav('/image-compressor', e)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 font-medium"
+            className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-medium min-h-[48px] transition-colors ${
+              currentPath === '/image-compressor'
+                ? 'bg-blue-50 text-blue-700 font-semibold'
+                : 'text-slate-700 hover:bg-slate-100 active:bg-slate-200'
+            }`}
           >
-            <Zap className="w-4 h-4 text-blue-600" />
-            Image Compressor
+            <Zap className={`w-5 h-5 ${currentPath === '/image-compressor' ? 'text-blue-600' : 'text-slate-500'}`} />
+            <span>Image Compressor</span>
           </a>
           <a
             href="/image-resizer"
             onClick={(e) => handleNav('/image-resizer', e)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 font-medium"
+            className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-medium min-h-[48px] transition-colors ${
+              currentPath === '/image-resizer'
+                ? 'bg-blue-50 text-blue-700 font-semibold'
+                : 'text-slate-700 hover:bg-slate-100 active:bg-slate-200'
+            }`}
           >
-            <Maximize2 className="w-4 h-4 text-blue-600" />
-            Image Resizer
+            <Maximize2 className={`w-5 h-5 ${currentPath === '/image-resizer' ? 'text-blue-600' : 'text-slate-500'}`} />
+            <span>Image Resizer</span>
           </a>
           <a
             href="/jpg-to-png"
             onClick={(e) => handleNav('/jpg-to-png', e)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 font-medium"
+            className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-medium min-h-[48px] transition-colors ${
+              currentPath.includes('to-')
+                ? 'bg-blue-50 text-blue-700 font-semibold'
+                : 'text-slate-700 hover:bg-slate-100 active:bg-slate-200'
+            }`}
           >
-            <Repeat className="w-4 h-4 text-blue-600" />
-            Image Converter
+            <Repeat className={`w-5 h-5 ${currentPath.includes('to-') ? 'text-blue-600' : 'text-slate-500'}`} />
+            <span>Image Converter</span>
           </a>
           <a
             href="/tools"
             onClick={(e) => handleNav('/tools', e)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 font-medium"
+            className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-medium min-h-[48px] transition-colors ${
+              currentPath === '/tools'
+                ? 'bg-blue-50 text-blue-700 font-semibold'
+                : 'text-slate-700 hover:bg-slate-100 active:bg-slate-200'
+            }`}
           >
-            <Layers className="w-4 h-4 text-blue-600" />
-            All 20+ Tools
+            <Layers className={`w-5 h-5 ${currentPath === '/tools' ? 'text-blue-600' : 'text-slate-500'}`} />
+            <span>All 20+ Tools</span>
           </a>
           <a
             href="/blog"
             onClick={(e) => handleNav('/blog', e)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:bg-slate-100 font-medium"
+            className={`flex items-center gap-3 px-3.5 py-3 rounded-xl font-medium min-h-[48px] transition-colors ${
+              currentPath.startsWith('/blog')
+                ? 'bg-blue-50 text-blue-700 font-semibold'
+                : 'text-slate-700 hover:bg-slate-100 active:bg-slate-200'
+            }`}
           >
-            <BookOpen className="w-4 h-4 text-blue-600" />
-            Optimization Blog
+            <BookOpen className={`w-5 h-5 ${currentPath.startsWith('/blog') ? 'text-blue-600' : 'text-slate-500'}`} />
+            <span>Optimization Blog</span>
           </a>
           <div className="pt-3 border-t border-slate-100">
             <a
               href="/image-compressor"
               onClick={(e) => handleNav('/image-compressor', e)}
-              className="w-full inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm"
+              className="w-full inline-flex items-center justify-center min-h-[48px] px-4 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 rounded-xl shadow-sm transition-colors"
             >
-              Compress Image
+              Compress Image Free
             </a>
           </div>
         </div>
