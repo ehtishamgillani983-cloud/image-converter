@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/</loc>
+    <loc>https://allinoneconverter.vercel.app/</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -10,7 +10,7 @@
 
   <!-- Main Tools Hub -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/tools</loc>
+    <loc>https://allinoneconverter.vercel.app/tools</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -18,25 +18,25 @@
 
   <!-- Core Compression Tools -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/image-compressor</loc>
+    <loc>https://allinoneconverter.vercel.app/image-compressor</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-jpg</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-jpg</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-png</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-png</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-webp</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-webp</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -44,31 +44,31 @@
 
   <!-- Target Size Tools -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-image-to-200kb</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-image-to-200kb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-image-to-100kb</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-image-to-100kb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-image-to-500kb</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-image-to-500kb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-image-to-1mb</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-image-to-1mb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/compress-image-to-2mb</loc>
+    <loc>https://allinoneconverter.vercel.app/compress-image-to-2mb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -76,25 +76,25 @@
 
   <!-- Editing & Resizing Tools -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/image-resizer</loc>
+    <loc>https://allinoneconverter.vercel.app/image-resizer</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/image-cropper</loc>
+    <loc>https://allinoneconverter.vercel.app/image-cropper</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/image-rotator</loc>
+    <loc>https://allinoneconverter.vercel.app/image-rotator</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/image-quality-reducer</loc>
+    <loc>https://allinoneconverter.vercel.app/image-quality-reducer</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -102,49 +102,49 @@
 
   <!-- Format Converters -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/jpg-to-png</loc>
+    <loc>https://allinoneconverter.vercel.app/jpg-to-png</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/png-to-jpg</loc>
+    <loc>https://allinoneconverter.vercel.app/png-to-jpg</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/jpg-to-webp</loc>
+    <loc>https://allinoneconverter.vercel.app/jpg-to-webp</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/png-to-webp</loc>
+    <loc>https://allinoneconverter.vercel.app/png-to-webp</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/webp-to-jpg</loc>
+    <loc>https://allinoneconverter.vercel.app/webp-to-jpg</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/webp-to-png</loc>
+    <loc>https://allinoneconverter.vercel.app/webp-to-png</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/heic-to-jpg</loc>
+    <loc>https://allinoneconverter.vercel.app/heic-to-jpg</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/image-to-pdf</loc>
+    <loc>https://allinoneconverter.vercel.app/image-to-pdf</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -152,79 +152,79 @@
 
   <!-- Blog Hub & Educational Guides -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog</loc>
+    <loc>https://allinoneconverter.vercel.app/blog</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-compress-an-image-without-losing-quality</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-compress-an-image-without-losing-quality</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-reduce-image-size-online</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-reduce-image-size-online</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-compress-jpg-images</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-compress-jpg-images</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-compress-png-images</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-compress-png-images</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/jpg-vs-png-vs-webp</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/jpg-vs-png-vs-webp</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/what-is-image-compression</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/what-is-image-compression</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-compress-an-image-to-200kb</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-compress-an-image-to-200kb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-compress-an-image-to-100kb</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-compress-an-image-to-100kb</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-to-reduce-photo-size-on-mobile</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-to-reduce-photo-size-on-mobile</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/best-image-format-for-websites</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/best-image-format-for-websites</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/webp-vs-jpg</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/webp-vs-jpg</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/blog/how-image-compression-improves-website-performance</loc>
+    <loc>https://allinoneconverter.vercel.app/blog/how-image-compression-improves-website-performance</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -232,25 +232,25 @@
 
   <!-- Legal & Information Pages -->
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/privacy</loc>
+    <loc>https://allinoneconverter.vercel.app/privacy</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/terms</loc>
+    <loc>https://allinoneconverter.vercel.app/terms</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/contact</loc>
+    <loc>https://allinoneconverter.vercel.app/contact</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/sitemap</loc>
+    <loc>https://allinoneconverter.vercel.app/sitemap</loc>
     <lastmod>2026-09-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
