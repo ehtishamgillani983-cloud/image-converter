@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Search, ArrowRight, Layers, Minimize2, FileImage, Image as ImageIcon, Zap, Target, Maximize2, Repeat, Sparkles, Smartphone, FileText, Crop, RotateCw, Sliders } from 'lucide-react';
 import { TOOLS_DATA, TOOL_CATEGORIES, ToolDef } from '../data/toolsData';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { getSiteOrigin } from '../utils/seo';
 
 interface AllToolsPageProps {
   onNavigate: (path: string) => void;
@@ -33,6 +34,10 @@ export const AllToolsPage: React.FC<AllToolsPageProps> = ({
 
   useEffect(() => {
     document.title = 'All Online Image Tools – Free Image Optimizer Suite | QuickPixel Tools';
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('content', `${getSiteOrigin()}/tools`);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 

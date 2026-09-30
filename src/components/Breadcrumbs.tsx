@@ -1,5 +1,6 @@
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
+import { getSiteOrigin } from '../utils/seo';
 
 export interface BreadcrumbItem {
   name: string;
@@ -12,6 +13,7 @@ interface BreadcrumbsProps {
 }
 
 export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigate }) => {
+  const origin = getSiteOrigin();
   const allItems: BreadcrumbItem[] = [{ name: 'Home', url: '/' }, ...items];
 
   // Schema.org BreadcrumbList JSON-LD
@@ -22,7 +24,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = ({ items, onNavigate }) =
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `https://quickpixel.ai.studio${item.url}`,
+      item: `${origin}${item.url}`,
     })),
   };
 

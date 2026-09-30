@@ -6,6 +6,7 @@ import { Breadcrumbs } from '../components/Breadcrumbs';
 import { FaqSection } from '../components/FaqSection';
 import { RelatedToolsSection } from '../components/RelatedToolsSection';
 import { AdPlaceholder } from '../components/AdPlaceholder';
+import { getSiteOrigin } from '../utils/seo';
 
 interface ToolPageProps {
   tool: ToolDef;
@@ -13,6 +14,8 @@ interface ToolPageProps {
 }
 
 export const ToolPage: React.FC<ToolPageProps> = ({ tool, onNavigate }) => {
+  const origin = getSiteOrigin();
+
   // Update document title and canonical URL dynamically for client-side navigation
   useEffect(() => {
     document.title = tool.metaTitle;
@@ -33,7 +36,7 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, onNavigate }) => {
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('content', `https://quickpixel.ai.studio/${tool.slug}`);
+    canonical.setAttribute('content', `${origin}/${tool.slug}`);
 
     // Update OG tags
     const ogTitle = document.querySelector('meta[property="og:title"]');
@@ -44,14 +47,14 @@ export const ToolPage: React.FC<ToolPageProps> = ({ tool, onNavigate }) => {
 
     // Scroll to top on page switch
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [tool]);
+  }, [tool, origin]);
 
   // SoftwareApplication / WebApplication Schema.org
   const webAppSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: tool.name,
-    url: `https://quickpixel.ai.studio/${tool.slug}`,
+    url: `${origin}/${tool.slug}`,
     description: tool.metaDescription,
     applicationCategory: 'MultimediaApplication',
     operatingSystem: 'All',

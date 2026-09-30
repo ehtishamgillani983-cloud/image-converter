@@ -3,6 +3,7 @@ import { ShieldCheck, FileText, Mail, Map, ArrowRight } from 'lucide-react';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { TOOLS_DATA } from '../data/toolsData';
 import { BLOG_POSTS } from '../data/blogData';
+import { getSiteOrigin } from '../utils/seo';
 
 interface LegalPageProps {
   type: 'privacy' | 'terms' | 'contact' | 'sitemap';
@@ -16,6 +17,12 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type, onNavigate }) => {
     if (type === 'contact') title = 'Contact & Support | QuickPixel Tools';
     if (type === 'sitemap') title = 'HTML Sitemap | QuickPixel Tools';
     document.title = title;
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('content', `${getSiteOrigin()}/${type}`);
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [type]);
 

@@ -3,6 +3,7 @@ import { Clock, Calendar, User, ArrowRight, Zap, Share2 } from 'lucide-react';
 import { BlogPost, BLOG_POSTS } from '../data/blogData';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { AdPlaceholder } from '../components/AdPlaceholder';
+import { getSiteOrigin } from '../utils/seo';
 
 interface BlogPostPageProps {
   post: BlogPost;
@@ -10,6 +11,8 @@ interface BlogPostPageProps {
 }
 
 export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onNavigate }) => {
+  const origin = getSiteOrigin();
+
   useEffect(() => {
     document.title = `${post.title} | QuickPixel Tools Blog`;
 
@@ -27,10 +30,10 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onNavigate }) 
       canonical.setAttribute('rel', 'canonical');
       document.head.appendChild(canonical);
     }
-    canonical.setAttribute('content', `https://quickpixel.ai.studio/blog/${post.slug}`);
+    canonical.setAttribute('content', `${origin}/blog/${post.slug}`);
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [post]);
+  }, [post, origin]);
 
   const articleSchema = {
     '@context': 'https://schema.org',
@@ -44,12 +47,12 @@ export const BlogPostPage: React.FC<BlogPostPageProps> = ({ post, onNavigate }) 
     publisher: {
       '@type': 'Organization',
       name: 'QuickPixel Tools',
-      url: 'https://quickpixel.ai.studio/',
+      url: `${origin}/`,
     },
     datePublished: post.publishDate,
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `https://quickpixel.ai.studio/blog/${post.slug}`,
+      '@id': `${origin}/blog/${post.slug}`,
     },
   };
 

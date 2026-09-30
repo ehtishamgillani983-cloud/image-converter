@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://quickpixel.ai.studio/sitemap.xml
+Sitemap: https://ais-pre-ty6diymvlughewikchko4e-115949490517.asia-southeast1.run.app/sitemap.xml

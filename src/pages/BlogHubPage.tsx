@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BookOpen, ArrowRight, Search, Clock, Calendar, User } from 'lucide-react';
 import { BLOG_POSTS, BlogPost } from '../data/blogData';
 import { Breadcrumbs } from '../components/Breadcrumbs';
+import { getSiteOrigin } from '../utils/seo';
 
 interface BlogHubPageProps {
   onNavigate: (path: string) => void;
@@ -12,6 +13,10 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onNavigate }) => {
 
   useEffect(() => {
     document.title = 'Image Optimization Blog & Guides | QuickPixel Tools';
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('content', `${getSiteOrigin()}/blog`);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 

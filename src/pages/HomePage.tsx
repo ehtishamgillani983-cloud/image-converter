@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Zap,
   ShieldCheck,
@@ -19,12 +19,20 @@ import { FaqSection } from '../components/FaqSection';
 import { AdPlaceholder } from '../components/AdPlaceholder';
 import { TOOLS_DATA } from '../data/toolsData';
 import { BLOG_POSTS } from '../data/blogData';
+import { getSiteOrigin } from '../utils/seo';
 
 interface HomePageProps {
   onNavigate: (path: string) => void;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
+  useEffect(() => {
+    document.title = 'Free Online Image Compressor & Image Tools | QuickPixel Tools';
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute('content', `${getSiteOrigin()}/`);
+    }
+  }, []);
   const homeFaqs = [
     {
       question: 'What is an image compressor?',
