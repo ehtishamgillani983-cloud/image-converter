@@ -1,0 +1,6 @@
+{
+  "name": "QuickPixel Tools",
+  "description": "Free Online Image Tools — Compress, convert and resize JPG, PNG, WebP and other image formats online. Fast, free and privacy-friendly.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
