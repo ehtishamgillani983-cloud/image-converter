@@ -12,7 +12,6 @@ export interface ProcessOptions {
   quality: number; // 0.05 to 1.0
   outputFormat: 'image/jpeg' | 'image/png' | 'image/webp' | 'original';
   targetSizeBytes?: number; // target size in bytes (e.g. 200 * 1024 for 200KB)
-  isHighCompressionPreset?: boolean;
   resizeOptions?: {
     width?: number;
     height?: number;
@@ -52,8 +51,6 @@ export interface ProcessedResult {
   percentageSaved: number;
   format: string;
   processingTimeMs: number;
-  status: 'compressed' | 'already_optimized' | 'target_reached';
-  statusMessage?: string;
   error?: string;
 }
 
@@ -178,34 +175,9 @@ function cloneCanvas(sourceCanvas: HTMLCanvasElement): HTMLCanvasElement {
 }
 
 /**
- * Create a proportionally scaled copy of a canvas
- */
-function createScaledCanvas(
-  sourceCanvas: HTMLCanvasElement,
-  scale: number,
-  fillBackground?: string,
-): HTMLCanvasElement {
-  const scaled = document.createElement('canvas');
-  scaled.width = Math.max(1, Math.round(sourceCanvas.width * scale));
-  scaled.height = Math.max(1, Math.round(sourceCanvas.height * scale));
-  const sCtx = scaled.getContext('2d', { willReadFrequently: true });
-  if (sCtx) {
-    sCtx.imageSmoothingEnabled = true;
-    sCtx.imageSmoothingQuality = 'high';
-    if (fillBackground) {
-      sCtx.fillStyle = fillBackground;
-      sCtx.fillRect(0, 0, scaled.width, scaled.height);
-    }
-    sCtx.drawImage(sourceCanvas, 0, 0, scaled.width, scaled.height);
-  }
-  return scaled;
-}
-
-/**
- * Quantize canvas ImageData colors for true client-side PNG compression.
- * In HTML5 Canvas, canvas.toBlob('image/png', quality) ignores the quality param.
- * This function performs color quantization (palette reduction) directly on the RGBA buffer
- * so that PNG Deflate compression achieves real file size reduction.
+ * Quantize canvas ImageData colors for client-side PNG compression.
+ * In HTML5 Canvas, canvas.toBlob('image/png', quality) ignores quality param.
+ * This performs color reduction directly on RGBA buffer for PNG deflation.
  */
 function quantizeCanvasBuffer(
   ctx: CanvasRenderingContext2D,
@@ -222,7 +194,6 @@ function quantizeCanvasBuffer(
 
   for (let i = 0; i < len; i += 4) {
     const a = data[i + 3];
-    // Clean transparent pixels
     if (a < 16) {
       data[i] = 0;
       data[i + 1] = 0;
@@ -235,463 +206,12 @@ function quantizeCanvasBuffer(
       data[i + 3] = Math.min(255, Math.floor((a + halfStep) / step) * step);
     }
 
-    // Quantize RGB channels with rounding
     data[i] = Math.min(255, Math.floor((data[i] + halfStep) / step) * step);
     data[i + 1] = Math.min(255, Math.floor((data[i + 1] + halfStep) / step) * step);
     data[i + 2] = Math.min(255, Math.floor((data[i + 2] + halfStep) / step) * step);
   }
 
   ctx.putImageData(imageData, 0, 0);
-}
-
-/**
- * Reliable JPEG Compression Pipeline
- * - Real quality encoding with multi-pass testing
- * - Compares output against original Blob size
- * - Automatically retries with stronger compression if output is >= original
- * - Strict target size guarantee with binary search and progressive downscaling
- */
-async function compressJpeg(
-  canvas: HTMLCanvasElement,
-  originalFile: File,
-  quality: number,
-  targetBytes?: number,
-  isPreset = false,
-): Promise<{
-  blob: Blob;
-  status: 'compressed' | 'already_optimized' | 'target_reached';
-  statusMessage?: string;
-  outputWidth: number;
-  outputHeight: number;
-}> {
-  // Case A: Target size mode (e.g. Under 200KB, Under 100KB, Custom target)
-  if (targetBytes && targetBytes > 0) {
-    let minQ = 0.05;
-    let maxQ = 0.95;
-    let bestBlob: Blob | null = null;
-    let currentW = canvas.width;
-    let currentH = canvas.height;
-
-    // Binary search on quality (7 iterations gives precision within 0.01)
-    for (let i = 0; i < 7; i++) {
-      const midQ = (minQ + maxQ) / 2;
-      const testBlob = await canvasToBlob(canvas, 'image/jpeg', midQ);
-
-      if (testBlob.size <= targetBytes) {
-        bestBlob = testBlob;
-        minQ = midQ; // Try higher quality while staying <= targetBytes
-      } else {
-        maxQ = midQ; // Try lower quality
-      }
-    }
-
-    if (bestBlob && bestBlob.size <= targetBytes) {
-      return {
-        blob: bestBlob,
-        status: 'target_reached',
-        statusMessage: `Compressed to under ${formatBytes(targetBytes)} (${formatBytes(bestBlob.size)})`,
-        outputWidth: currentW,
-        outputHeight: currentH,
-      };
-    }
-
-    // If lowest quality (0.05) still exceeds targetBytes:
-    // Downscale canvas dimensions until it strictly fits
-    const downscaleSteps = [0.85, 0.70, 0.55, 0.40, 0.30, 0.20, 0.12];
-    for (const scale of downscaleSteps) {
-      const scaledCanvas = createScaledCanvas(canvas, scale, '#ffffff');
-      for (const q of [0.75, 0.60, 0.45, 0.30, 0.15]) {
-        const scaledBlob = await canvasToBlob(scaledCanvas, 'image/jpeg', q);
-        if (scaledBlob.size <= targetBytes) {
-          return {
-            blob: scaledBlob,
-            status: 'target_reached',
-            statusMessage: `Rescaled to ${scaledCanvas.width}×${scaledCanvas.height} to fit under ${formatBytes(targetBytes)}`,
-            outputWidth: scaledCanvas.width,
-            outputHeight: scaledCanvas.height,
-          };
-        }
-      }
-    }
-
-    // Minimum fallback
-    const minCanvas = createScaledCanvas(canvas, 0.1, '#ffffff');
-    const minBlob = await canvasToBlob(minCanvas, 'image/jpeg', 0.25);
-    return {
-      blob: minBlob,
-      status: 'target_reached',
-      outputWidth: minCanvas.width,
-      outputHeight: minCanvas.height,
-    };
-  }
-
-  // Case B: Standard compression mode
-  // 1. Initial encoding at requested quality
-  const initialBlob = await canvasToBlob(canvas, 'image/jpeg', quality);
-
-  // If initialBlob is smaller than original, compression succeeded!
-  if (initialBlob.size < originalFile.size) {
-    return {
-      blob: initialBlob,
-      status: 'compressed',
-      outputWidth: canvas.width,
-      outputHeight: canvas.height,
-    };
-  }
-
-  // If initialBlob >= originalFile.size:
-  // "If the compressed result is larger than the original, automatically retry with a stronger compression setting."
-  const retryQualities = [
-    Math.round(quality * 0.85 * 100) / 100,
-    Math.round(quality * 0.70 * 100) / 100,
-    Math.round(quality * 0.55 * 100) / 100,
-    0.45,
-    0.35,
-    0.25,
-  ].filter((q) => q < quality && q >= 0.2);
-
-  for (const retryQ of retryQualities) {
-    const retryBlob = await canvasToBlob(canvas, 'image/jpeg', retryQ);
-    if (retryBlob.size < originalFile.size) {
-      return {
-        blob: retryBlob,
-        status: 'compressed',
-        outputWidth: canvas.width,
-        outputHeight: canvas.height,
-      };
-    }
-  }
-
-  // If user selected high compression preset (e.g. maximum), attempt gentle downscaling
-  if (isPreset) {
-    for (const scale of [0.9, 0.8]) {
-      const scaledCanvas = createScaledCanvas(canvas, scale, '#ffffff');
-      const scaledBlob = await canvasToBlob(scaledCanvas, 'image/jpeg', 0.65);
-      if (scaledBlob.size < originalFile.size) {
-        return {
-          blob: scaledBlob,
-          status: 'compressed',
-          outputWidth: scaledCanvas.width,
-          outputHeight: scaledCanvas.height,
-        };
-      }
-    }
-  }
-
-  // If still not smaller than original file, the input image was already maximally compressed!
-  // If original file was JPEG, preserve original file:
-  const isOriginalJpeg =
-    originalFile.type === 'image/jpeg' ||
-    originalFile.name.toLowerCase().endsWith('.jpg') ||
-    originalFile.name.toLowerCase().endsWith('.jpeg');
-
-  if (isOriginalJpeg) {
-    return {
-      blob: originalFile,
-      status: 'already_optimized',
-      statusMessage:
-        'Original image is already maximally compressed. QuickPixel preserved the file to prevent quality degradation.',
-      outputWidth: canvas.width,
-      outputHeight: canvas.height,
-    };
-  }
-
-  // If original was another format (e.g. HEIC or uncompressed PNG converted to JPG):
-  // Return the smallest generated JPEG blob
-  return {
-    blob: initialBlob,
-    status: 'compressed',
-    outputWidth: canvas.width,
-    outputHeight: canvas.height,
-  };
-}
-
-/**
- * Reliable PNG Compression Pipeline
- * - Performs true color quantization directly on canvas buffer
- * - Compares actual Blob sizes
- * - Retries with stronger quantization if needed
- * - Preserves original if already maximally optimized, never falsely claiming savings
- */
-async function compressPng(
-  canvas: HTMLCanvasElement,
-  originalFile: File,
-  quality: number,
-  targetBytes?: number,
-  isPreset = false,
-): Promise<{
-  blob: Blob;
-  status: 'compressed' | 'already_optimized' | 'target_reached';
-  statusMessage?: string;
-  outputWidth: number;
-  outputHeight: number;
-}> {
-  // Case A: Target size specified (e.g. Under 200KB, Under 100KB)
-  if (targetBytes && targetBytes > 0) {
-    // Try quantization steps first on full-size canvas
-    for (const step of [8, 16, 24, 32]) {
-      const testCanvas = cloneCanvas(canvas);
-      const tCtx = testCanvas.getContext('2d', { willReadFrequently: true });
-      if (tCtx) {
-        quantizeCanvasBuffer(tCtx, testCanvas.width, testCanvas.height, step);
-        const testBlob = await canvasToBlob(testCanvas, 'image/png', 1.0);
-        if (testBlob.size <= targetBytes) {
-          return {
-            blob: testBlob,
-            status: 'target_reached',
-            statusMessage: `Compressed to under ${formatBytes(targetBytes)} (${formatBytes(testBlob.size)})`,
-            outputWidth: canvas.width,
-            outputHeight: canvas.height,
-          };
-        }
-      }
-    }
-
-    // If still exceeds targetBytes, downscale dimensions until it fits
-    const downscaleSteps = [0.85, 0.7, 0.55, 0.4, 0.3, 0.2, 0.12];
-    for (const scale of downscaleSteps) {
-      const scaledCanvas = createScaledCanvas(canvas, scale);
-      const sCtx = scaledCanvas.getContext('2d', { willReadFrequently: true });
-      if (sCtx) {
-        quantizeCanvasBuffer(sCtx, scaledCanvas.width, scaledCanvas.height, 16);
-        const scaledBlob = await canvasToBlob(scaledCanvas, 'image/png', 1.0);
-        if (scaledBlob.size <= targetBytes) {
-          return {
-            blob: scaledBlob,
-            status: 'target_reached',
-            statusMessage: `Rescaled to ${scaledCanvas.width}×${scaledCanvas.height} to fit under ${formatBytes(targetBytes)}`,
-            outputWidth: scaledCanvas.width,
-            outputHeight: scaledCanvas.height,
-          };
-        }
-      }
-    }
-
-    // Fallback: smallest achievable at minimum scale
-    const minCanvas = createScaledCanvas(canvas, 0.1);
-    const mCtx = minCanvas.getContext('2d', { willReadFrequently: true });
-    if (mCtx) quantizeCanvasBuffer(mCtx, minCanvas.width, minCanvas.height, 32);
-    const minBlob = await canvasToBlob(minCanvas, 'image/png', 1.0);
-    return {
-      blob: minBlob,
-      status: 'target_reached',
-      outputWidth: minCanvas.width,
-      outputHeight: minCanvas.height,
-    };
-  }
-
-  // Case B: Standard compression mode
-  // Initial quantization step based on requested quality
-  const baseStep = Math.max(4, Math.round((1 - quality) * 36));
-  const testCanvas = cloneCanvas(canvas);
-  const tCtx = testCanvas.getContext('2d', { willReadFrequently: true });
-  if (tCtx) {
-    quantizeCanvasBuffer(tCtx, testCanvas.width, testCanvas.height, baseStep);
-  }
-  const testBlob = await canvasToBlob(testCanvas, 'image/png', 1.0);
-
-  // If quantized blob is smaller than original, we achieved compression!
-  if (testBlob.size < originalFile.size) {
-    return {
-      blob: testBlob,
-      status: 'compressed',
-      outputWidth: canvas.width,
-      outputHeight: canvas.height,
-    };
-  }
-
-  // If testBlob >= originalFile.size, try stronger quantization
-  const strongerSteps = [baseStep + 8, baseStep + 16, 32].filter((s) => s > baseStep);
-  for (const step of strongerSteps) {
-    const retryCanvas = cloneCanvas(canvas);
-    const rCtx = retryCanvas.getContext('2d', { willReadFrequently: true });
-    if (rCtx) {
-      quantizeCanvasBuffer(rCtx, retryCanvas.width, retryCanvas.height, step);
-      const retryBlob = await canvasToBlob(retryCanvas, 'image/png', 1.0);
-      if (retryBlob.size < originalFile.size) {
-        return {
-          blob: retryBlob,
-          status: 'compressed',
-          outputWidth: canvas.width,
-          outputHeight: canvas.height,
-        };
-      }
-    }
-  }
-
-  // If user selected high-compression preset, attempt gentle downscaling
-  if (isPreset) {
-    for (const scale of [0.9, 0.8]) {
-      const scaledCanvas = createScaledCanvas(canvas, scale);
-      const sCtx = scaledCanvas.getContext('2d', { willReadFrequently: true });
-      if (sCtx) {
-        quantizeCanvasBuffer(sCtx, scaledCanvas.width, scaledCanvas.height, 16);
-        const scaledBlob = await canvasToBlob(scaledCanvas, 'image/png', 1.0);
-        if (scaledBlob.size < originalFile.size) {
-          return {
-            blob: scaledBlob,
-            status: 'compressed',
-            outputWidth: scaledCanvas.width,
-            outputHeight: scaledCanvas.height,
-          };
-        }
-      }
-    }
-  }
-
-  // If still not smaller than original file, the input PNG is already maximally compressed!
-  // Requirement 2 & 5:
-  // "Use the existing PNG compression/quantization implementation only if it actually produces a smaller valid PNG. Compare actual Blob sizes. If PNG cannot be reduced without unacceptable degradation, clearly report that instead of falsely claiming compression."
-  return {
-    blob: originalFile,
-    status: 'already_optimized',
-    statusMessage:
-      'Original PNG is already maximally optimized. File preserved to prevent file size enlargement.',
-    outputWidth: canvas.width,
-    outputHeight: canvas.height,
-  };
-}
-
-/**
- * Reliable WebP Compression Pipeline
- * - Real lossy WebP encoding with quality controls
- * - Multi-pass retry if output exceeds original size
- * - Preserves original if already optimal
- */
-async function compressWebp(
-  canvas: HTMLCanvasElement,
-  originalFile: File,
-  quality: number,
-  targetBytes?: number,
-  isPreset = false,
-): Promise<{
-  blob: Blob;
-  status: 'compressed' | 'already_optimized' | 'target_reached';
-  statusMessage?: string;
-  outputWidth: number;
-  outputHeight: number;
-}> {
-  // Case A: Target size mode
-  if (targetBytes && targetBytes > 0) {
-    let minQ = 0.05;
-    let maxQ = 0.95;
-    let bestBlob: Blob | null = null;
-
-    for (let i = 0; i < 7; i++) {
-      const midQ = (minQ + maxQ) / 2;
-      const testBlob = await canvasToBlob(canvas, 'image/webp', midQ);
-
-      if (testBlob.size <= targetBytes) {
-        bestBlob = testBlob;
-        minQ = midQ;
-      } else {
-        maxQ = midQ;
-      }
-    }
-
-    if (bestBlob && bestBlob.size <= targetBytes) {
-      return {
-        blob: bestBlob,
-        status: 'target_reached',
-        statusMessage: `Compressed to under ${formatBytes(targetBytes)} (${formatBytes(bestBlob.size)})`,
-        outputWidth: canvas.width,
-        outputHeight: canvas.height,
-      };
-    }
-
-    // Downscale if necessary
-    const downscaleSteps = [0.85, 0.7, 0.55, 0.4, 0.3, 0.2, 0.12];
-    for (const scale of downscaleSteps) {
-      const scaledCanvas = createScaledCanvas(canvas, scale);
-      for (const q of [0.75, 0.6, 0.45, 0.3]) {
-        const scaledBlob = await canvasToBlob(scaledCanvas, 'image/webp', q);
-        if (scaledBlob.size <= targetBytes) {
-          return {
-            blob: scaledBlob,
-            status: 'target_reached',
-            statusMessage: `Rescaled to ${scaledCanvas.width}×${scaledCanvas.height} to fit under ${formatBytes(targetBytes)}`,
-            outputWidth: scaledCanvas.width,
-            outputHeight: scaledCanvas.height,
-          };
-        }
-      }
-    }
-
-    const minCanvas = createScaledCanvas(canvas, 0.1);
-    const minBlob = await canvasToBlob(minCanvas, 'image/webp', 0.25);
-    return {
-      blob: minBlob,
-      status: 'target_reached',
-      outputWidth: minCanvas.width,
-      outputHeight: minCanvas.height,
-    };
-  }
-
-  // Case B: Standard compression mode
-  const initialBlob = await canvasToBlob(canvas, 'image/webp', quality);
-  if (initialBlob.size < originalFile.size) {
-    return {
-      blob: initialBlob,
-      status: 'compressed',
-      outputWidth: canvas.width,
-      outputHeight: canvas.height,
-    };
-  }
-
-  // Retry ladder
-  const retryQualities = [
-    Math.round(quality * 0.85 * 100) / 100,
-    Math.round(quality * 0.7 * 100) / 100,
-    Math.round(quality * 0.55 * 100) / 100,
-    0.45,
-    0.35,
-    0.2,
-  ].filter((q) => q < quality && q >= 0.15);
-
-  for (const retryQ of retryQualities) {
-    const retryBlob = await canvasToBlob(canvas, 'image/webp', retryQ);
-    if (retryBlob.size < originalFile.size) {
-      return {
-        blob: retryBlob,
-        status: 'compressed',
-        outputWidth: canvas.width,
-        outputHeight: canvas.height,
-      };
-    }
-  }
-
-  if (isPreset) {
-    for (const scale of [0.9, 0.8]) {
-      const scaledCanvas = createScaledCanvas(canvas, scale);
-      const scaledBlob = await canvasToBlob(scaledCanvas, 'image/webp', 0.65);
-      if (scaledBlob.size < originalFile.size) {
-        return {
-          blob: scaledBlob,
-          status: 'compressed',
-          outputWidth: scaledCanvas.width,
-          outputHeight: scaledCanvas.height,
-        };
-      }
-    }
-  }
-
-  if (originalFile.type === 'image/webp' || originalFile.name.toLowerCase().endsWith('.webp')) {
-    return {
-      blob: originalFile,
-      status: 'already_optimized',
-      statusMessage:
-        'WebP image is already maximally compressed. QuickPixel preserved the original file.',
-      outputWidth: canvas.width,
-      outputHeight: canvas.height,
-    };
-  }
-
-  return {
-    blob: initialBlob,
-    status: 'compressed',
-    outputWidth: canvas.width,
-    outputHeight: canvas.height,
-  };
 }
 
 /**
@@ -776,113 +296,82 @@ export async function processSingleImage(
 
   ctx.restore();
 
-  // 3. Compress / Export to Blob with Format-Specific Optimization Pipelines
+  // 3. Compress / Export to Blob
   let finalBlob: Blob;
-  let resultStatus: 'compressed' | 'already_optimized' | 'target_reached' = 'compressed';
-  let resultMessage: string | undefined = undefined;
-  let finalW = canvas.width;
-  let finalH = canvas.height;
-
   const finalQuality = Math.min(Math.max(options.quality, 0.05), 1.0);
-  const isPureCompress =
-    (options.mode === 'compress' || options.mode === 'quality_reduce') &&
-    !options.cropOptions &&
-    !options.resizeOptions &&
-    (!options.rotateOptions ||
-      (options.rotateOptions.degrees === 0 &&
-        !options.rotateOptions.flipH &&
-        !options.rotateOptions.flipV));
 
-  if (isPureCompress) {
-    if (mimeType === 'image/png') {
-      const comp = await compressPng(
-        canvas,
-        file,
-        finalQuality,
-        options.targetSizeBytes,
-        Boolean(options.isHighCompressionPreset),
-      );
-      finalBlob = comp.blob;
-      resultStatus = comp.status;
-      resultMessage = comp.statusMessage;
-      finalW = comp.outputWidth;
-      finalH = comp.outputHeight;
-    } else if (mimeType === 'image/webp') {
-      const comp = await compressWebp(
-        canvas,
-        file,
-        finalQuality,
-        options.targetSizeBytes,
-        Boolean(options.isHighCompressionPreset),
-      );
-      finalBlob = comp.blob;
-      resultStatus = comp.status;
-      resultMessage = comp.statusMessage;
-      finalW = comp.outputWidth;
-      finalH = comp.outputHeight;
-    } else {
-      // JPEG default
-      const comp = await compressJpeg(
-        canvas,
-        file,
-        finalQuality,
-        options.targetSizeBytes,
-        Boolean(options.isHighCompressionPreset),
-      );
-      finalBlob = comp.blob;
-      resultStatus = comp.status;
-      resultMessage = comp.statusMessage;
-      finalW = comp.outputWidth;
-      finalH = comp.outputHeight;
-    }
-  } else {
-    // Other modes: Resize, Crop, Rotate, Convert, or Target Size with transforms
-    if (options.targetSizeBytes && options.targetSizeBytes > 0) {
-      if (mimeType === 'image/png') {
-        const comp = await compressPng(canvas, file, finalQuality, options.targetSizeBytes, false);
-        finalBlob = comp.blob;
-        resultStatus = comp.status;
-        resultMessage = comp.statusMessage;
-        finalW = comp.outputWidth;
-        finalH = comp.outputHeight;
-      } else if (mimeType === 'image/webp') {
-        const comp = await compressWebp(canvas, file, finalQuality, options.targetSizeBytes, false);
-        finalBlob = comp.blob;
-        resultStatus = comp.status;
-        resultMessage = comp.statusMessage;
-        finalW = comp.outputWidth;
-        finalH = comp.outputHeight;
-      } else {
-        const comp = await compressJpeg(canvas, file, finalQuality, options.targetSizeBytes, false);
-        finalBlob = comp.blob;
-        resultStatus = comp.status;
-        resultMessage = comp.statusMessage;
-        finalW = comp.outputWidth;
-        finalH = comp.outputHeight;
-      }
-    } else {
+  // If Target Size (in bytes) is requested (e.g. Under 200KB, Under 100KB, etc.)
+  if (options.targetSizeBytes && options.targetSizeBytes > 0) {
+    let minQ = 0.05;
+    let maxQ = 0.95;
+    let bestBlob: Blob | null = null;
+
+    // Binary search on quality to find best match under target size
+    for (let i = 0; i < 6; i++) {
+      const midQ = (minQ + maxQ) / 2;
+      let testBlob: Blob;
+
       if (mimeType === 'image/png') {
         const testCanvas = cloneCanvas(canvas);
         const tCtx = testCanvas.getContext('2d', { willReadFrequently: true });
-        if (tCtx && finalQuality < 0.98) {
+        if (tCtx) {
           quantizeCanvasBuffer(
             tCtx,
             testCanvas.width,
             testCanvas.height,
-            Math.max(2, Math.round((1 - finalQuality) * 32)),
+            Math.max(2, Math.round((1 - midQ) * 32)),
           );
+        }
+        testBlob = await canvasToBlob(testCanvas, mimeType, 1.0);
+      } else {
+        testBlob = await canvasToBlob(canvas, mimeType, midQ);
+      }
+
+      if (testBlob.size <= options.targetSizeBytes) {
+        bestBlob = testBlob;
+        minQ = midQ;
+      } else {
+        maxQ = midQ;
+      }
+    }
+
+    if (bestBlob) {
+      finalBlob = bestBlob;
+    } else {
+      // Fallback to lowest possible quality
+      if (mimeType === 'image/png') {
+        const testCanvas = cloneCanvas(canvas);
+        const tCtx = testCanvas.getContext('2d', { willReadFrequently: true });
+        if (tCtx) {
+          quantizeCanvasBuffer(tCtx, testCanvas.width, testCanvas.height, 32);
         }
         finalBlob = await canvasToBlob(testCanvas, mimeType, 1.0);
       } else {
-        finalBlob = await canvasToBlob(canvas, mimeType, finalQuality);
+        finalBlob = await canvasToBlob(canvas, mimeType, 0.05);
       }
+    }
+  } else {
+    // Normal quality-based compression/export
+    if (mimeType === 'image/png') {
+      const testCanvas = cloneCanvas(canvas);
+      const tCtx = testCanvas.getContext('2d', { willReadFrequently: true });
+      if (tCtx && finalQuality < 0.98) {
+        quantizeCanvasBuffer(
+          tCtx,
+          testCanvas.width,
+          testCanvas.height,
+          Math.max(2, Math.round((1 - finalQuality) * 32)),
+        );
+      }
+      finalBlob = await canvasToBlob(testCanvas, mimeType, 1.0);
+    } else {
+      finalBlob = await canvasToBlob(canvas, mimeType, finalQuality);
     }
   }
 
   const endTime = performance.now();
   const compressedUrl = URL.createObjectURL(finalBlob);
 
-  // Guarantee: Percentage saved is strictly non-negative, never falsely claiming savings when enlarged
   const percentageSaved =
     finalBlob.size < file.size
       ? Math.max(0, Math.round(((file.size - finalBlob.size) / file.size) * 100))
@@ -897,15 +386,13 @@ export async function processSingleImage(
     originalType: file.type,
     originalPreviewUrl: previewUrl,
     compressedSize: finalBlob.size,
-    compressedWidth: finalW,
-    compressedHeight: finalH,
+    compressedWidth: canvas.width,
+    compressedHeight: canvas.height,
     compressedBlob: finalBlob,
     compressedUrl,
     percentageSaved,
     format: mimeType.split('/')[1]?.toUpperCase() || 'JPEG',
     processingTimeMs: Math.round(endTime - startTime),
-    status: resultStatus,
-    statusMessage: resultMessage,
   };
 }
 
@@ -966,14 +453,12 @@ export async function convertImagesToPdf(
     const posX = (pageWidth - finalW) / 2;
     const posY = (pageHeight - finalH) / 2;
 
-    // Ensure dataUrl is converted to a clean JPEG/PNG dataURL so jsPDF never fails on WebP or raw data
     let safeDataUrl = dataUrl;
     let format: 'JPEG' | 'PNG' = 'JPEG';
 
     if (item.blob.type.includes('png')) {
       format = 'PNG';
     } else {
-      // Draw to canvas to guarantee valid JPEG dataURL for jsPDF
       const offscreenCanvas = document.createElement('canvas');
       offscreenCanvas.width = imgProps.width;
       offscreenCanvas.height = imgProps.height;

@@ -175,15 +175,11 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
             }
           : undefined);
 
-      const isHighPreset =
-        activePreset === 'maximum' || activePreset === 'whatsapp' || activePreset === 'email';
-
       const options: ProcessOptions = {
         mode: activeMode,
         quality: activeQuality,
         outputFormat: activeFormat,
         targetSizeBytes: targetBytes,
-        isHighCompressionPreset: isHighPreset,
         resizeOptions: activeResize,
         rotateOptions: activeRotate,
         cropOptions: activeCrop,
@@ -669,25 +665,12 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                 <div>
                   <span className="text-xs uppercase tracking-wider font-semibold text-slate-500">Total Saved</span>
                   <div className="flex items-baseline gap-2">
-                    {overallSavedPercent > 0 ? (
-                      <>
-                        <span className="text-2xl font-extrabold text-emerald-600">
-                          -{overallSavedPercent}%
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          ({formatBytes(totalSavedBytes)} saved)
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-2xl font-extrabold text-slate-700">
-                          0%
-                        </span>
-                        <span className="text-xs text-slate-500">
-                          (Already optimal)
-                        </span>
-                      </>
-                    )}
+                    <span className="text-2xl font-extrabold text-emerald-600">
+                      -{overallSavedPercent}%
+                    </span>
+                    <span className="text-xs text-slate-500">
+                      ({formatBytes(totalSavedBytes)} saved)
+                    </span>
                   </div>
                 </div>
                 <div className="h-8 w-px bg-slate-200 hidden sm:block" />
@@ -768,9 +751,7 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                     />
                     <div className="truncate max-w-[120px]">
                       <div className="truncate">{res.name}</div>
-                      <div className={`text-[10px] font-bold ${res.percentageSaved > 0 ? 'text-emerald-600' : 'text-slate-500'}`}>
-                        {res.percentageSaved > 0 ? `-${res.percentageSaved}%` : 'Optimal'}
-                      </div>
+                      <div className="text-[10px] text-emerald-600 font-bold">-{res.percentageSaved}%</div>
                     </div>
                   </button>
                 ))}
@@ -1350,10 +1331,7 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                             Original: {formatBytes(activeResult.originalSize)}
                           </div>
                           <div className="absolute top-3 right-3 bg-blue-600/80 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded pointer-events-none z-10">
-                            Optimized: {formatBytes(activeResult.compressedSize)}{' '}
-                            {activeResult.percentageSaved > 0
-                              ? `(-${activeResult.percentageSaved}%)`
-                              : '(Optimal)'}
+                            Optimized: {formatBytes(activeResult.compressedSize)} (-{activeResult.percentageSaved}%)
                           </div>
                         </div>
                       ) : (
@@ -1388,14 +1366,6 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                       )}
                     </div>
 
-                    {/* Status Note if image was already optimal or rescaled to fit target */}
-                    {activeResult.statusMessage && (
-                      <div className="px-4 py-2 bg-slate-950/80 border-t border-slate-800 text-xs text-slate-300 flex items-center gap-2">
-                        <CheckCircle className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                        <span>{activeResult.statusMessage}</span>
-                      </div>
-                    )}
-
                     {/* Stats & Download Row */}
                     <div className="p-4 bg-slate-900 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
                       <div className="grid grid-cols-3 gap-4 text-center sm:text-left w-full sm:w-auto">
@@ -1411,15 +1381,7 @@ export const ImageToolApp: React.FC<ImageToolAppProps> = ({
                         </div>
                         <div>
                           <span className="text-[10px] uppercase text-slate-500 font-semibold block">Reduction</span>
-                          <span
-                            className={`text-xs font-bold ${
-                              activeResult.percentageSaved > 0 ? 'text-emerald-400' : 'text-slate-300'
-                            }`}
-                          >
-                            {activeResult.percentageSaved > 0
-                              ? `-${activeResult.percentageSaved}%`
-                              : '0% (Optimal)'}
-                          </span>
+                          <span className="text-xs text-emerald-400 font-bold">-{activeResult.percentageSaved}%</span>
                         </div>
                       </div>
 
